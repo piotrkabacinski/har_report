@@ -8,7 +8,53 @@
   <body>
     <button type="button" id="load">Load</button>
     <p id="status"></p>
-    <ul id="list"></ul>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--
+        <tr>
+          <td>
+            <span class="time">17:20:01</span>
+          </td>
+          <td>POST</td>
+          <td>http://example.com</td>
+          <td>
+            <span class="success">200</span>
+          </td>
+        </tr>
+        <tr class="open">
+          <td>
+            <span class="time">17:20:01</span>
+          </td>
+          <td>POST</td>
+          <td>
+            <button class="href-button">http://example.com</button>
+          </td>
+          <td>
+            <span class="fail">500</span>
+          </td>
+        </tr>
+        <tr class="open">
+          <td colspan="4">
+            <div class="report">
+              <p>POST http://example.com [500]</p>
+              <p>Payload:</p>
+              <code>{ foo: true, bar: false }</code>
+              <p>Response:</p>
+              <code>Invalid query</code>
+            </div>
+          </td>
+        </tr>
+        -->
+      </tbody>
+    </table>
     <script src="panel.js"></script>
   </body>
 </html>

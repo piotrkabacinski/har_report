@@ -1,7 +1,7 @@
 enum ElementSelector {
   loadButton = "#load",
   status = "#status",
-  list = "#list",
+  table = "#table",
 }
 
 const setElementText = (selector: string, message: string) => {
@@ -14,24 +14,39 @@ const handleCreateEntriesList = () => {
   chrome.devtools.network.getHAR(function (harLog) {
     setElementText(ElementSelector.status, "");
 
-    if (!harLog.entries.length) {
+    const entries = harLog.entries.filter((entry) => entry.response.status);
+
+    if (!entries.length) {
       setElementText(ElementSelector.status, "No entries available");
       return;
     }
 
-    setElementText(ElementSelector.status, `Entries: ${harLog.entries.length}`);
+    setElementText(ElementSelector.status, `Entries: ${entries.length}`);
 
-    const list = document.querySelector(ElementSelector.list);
+    const tbody = document.querySelector(`${ElementSelector.table} tbody`);
 
-    harLog.entries.forEach((entry) => {
-      list.insertAdjacentHTML(
+    tbody.innerHTML = "";
+
+    entries.forEach((entry) => {
+      const { status } = entry.response;
+      const { url, method } = entry.request;
+
+      const target = new URL(url);
+
+      tbody.insertAdjacentHTML(
         "beforeend",
-        `<li>
-          ${new Date(entry.startedDateTime).toLocaleTimeString()}
-          ${entry.request.method}
-          ${entry.request.url}
-          [${entry.response.status}]
-        </li>`
+        `<tr>
+          <td>
+            <span class="time">
+              ${new Date(entry.startedDateTime).toLocaleTimeString()}
+            </span>
+          </td>
+          <td>${method}</td>
+          <td>${target.href.replace(target.origin, "")}</td>
+          <td>
+            <span class="${status < 400 ? "success" : "fail"}">${status}</span>
+          </td>
+        </tr>`
       );
     });
   });
