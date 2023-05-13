@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "module": "ES6",
+    "target": "ES2022",
+    "removeComments": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["chrome"],
+    "outDir": "dist"
+  },
+  "include": [
+    "src/*.ts",
+  ],
+  "exclude": ["node_modules"]
+}

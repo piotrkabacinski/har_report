@@ -1,0 +1,16 @@
+{
+  "name": "network_parser_ext",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "build": "sh build.sh"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.235",
+    "typescript": "^5.0.4"
+  },
+  "author": "Piotr Kabaciński",
+  "license": "ISC"
+}
