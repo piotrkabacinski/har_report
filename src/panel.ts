@@ -1,7 +1,6 @@
 import { setElementText } from "./utils/setElementText";
 import { getStatusClass } from "./utils/getStatusClass";
 import { appendEndpointButton } from "./utils/appendEndpointButton";
-import { createReport } from "./utils/createReport";
 
 enum ElementSelector {
   loadButton = "#load",

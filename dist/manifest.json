@@ -1,0 +1,7 @@
+{
+  "name": "HAR Parser",
+  "version": "0",
+  "manifest_version": 3,
+  "minimum_chrome_version": "110.0",
+  "devtools_page": "devtools.html"
+}
