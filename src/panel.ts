@@ -1,5 +1,6 @@
 import { setElementText } from "./utils/setElementText";
 import { getStatusColor } from "./utils/getStatusColor";
+import { appendEndpointButton } from "./utils/appendEndpointButton";
 
 enum ElementSelector {
   loadButton = "#load",
@@ -33,7 +34,7 @@ const handleCreateEntriesList = () => {
 
     tbody.innerHTML = "";
 
-    entries.forEach((entry) => {
+    entries.forEach((entry, index) => {
       const { status } = entry.response;
       const { url, method } = entry.request;
 
@@ -53,13 +54,11 @@ const handleCreateEntriesList = () => {
               ${status}
             </span>
           </td>
-          <td class="endpoint">
-            <button class="href-button">
-              ${target.href.replace(target.origin, "")}
-            </button>
-          </td>
+          <td class="endpoint" id="button-${index}"></td>
         </tr>`
       );
+
+      appendEndpointButton(index, target);
     });
   });
 };

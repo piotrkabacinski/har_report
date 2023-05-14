@@ -1,3 +1,7 @@
+#table {
+  border-collapse: collapse;
+}
+
 #table tr:nth-child(even) {
   background: var(--dark-grey);
 }
@@ -10,13 +14,9 @@
   background: var(--highlight);
 }
 
-.endpoint {
+#table td.endpoint {
   max-width: 0;
   width: 100%;
-}
-
-#table {
-  border-collapse: collapse;
 }
 
 #table tbody tr {
