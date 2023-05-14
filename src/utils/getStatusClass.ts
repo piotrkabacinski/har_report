@@ -4,7 +4,7 @@ enum ColorClass {
   red = "fail",
 }
 
-export const getStatusColor = (status: number): string => {
+export const getStatusClass = (status: number): string => {
   if (status < 200) return "";
 
   if (status < 300) return ColorClass.green;

@@ -1,6 +1,7 @@
 import { setElementText } from "./utils/setElementText";
-import { getStatusColor } from "./utils/getStatusColor";
+import { getStatusClass } from "./utils/getStatusClass";
 import { appendEndpointButton } from "./utils/appendEndpointButton";
+import { createReport } from "./utils/createReport";
 
 enum ElementSelector {
   loadButton = "#load",
@@ -8,41 +9,36 @@ enum ElementSelector {
   table = "#table",
 }
 
+const requests: chrome.devtools.network.Request[] = [];
+
 const handleCreateEntriesList = () => {
-  chrome.devtools.network.getHAR(function (harLog) {
-    setElementText(ElementSelector.status, "");
+  const table = document.querySelector(ElementSelector.table);
 
-    const entries = harLog.entries.filter(
-      (entry) =>
-        entry.response.status &&
-        ["xhr", "fetch"].includes(entry._resourceType as string)
-    );
+  if (!requests.length) {
+    setElementText(ElementSelector.status, "No requests available");
+    table.classList.add("hidden");
+    return;
+  }
 
-    const table = document.querySelector(ElementSelector.table);
+  setElementText(ElementSelector.status, "");
 
-    if (!entries.length) {
-      setElementText(ElementSelector.status, "No entries available");
-      table.classList.add("hidden");
-      return;
-    }
+  table.classList.remove("hidden");
 
-    table.classList.remove("hidden");
+  setElementText(ElementSelector.status, `Entries: ${requests.length}`);
 
-    setElementText(ElementSelector.status, `Entries: ${entries.length}`);
+  const tbody = document.querySelector(`${ElementSelector.table} tbody`);
 
-    const tbody = document.querySelector(`${ElementSelector.table} tbody`);
+  tbody.innerHTML = "";
 
-    tbody.innerHTML = "";
+  requests.forEach(async (entry, index) => {
+    const { status } = entry.response;
+    const { method } = entry.request;
 
-    entries.forEach((entry, index) => {
-      const { status } = entry.response;
-      const { url, method } = entry.request;
+    const statusClass = getStatusClass(status);
 
-      const target = new URL(url);
-
-      tbody.insertAdjacentHTML(
-        "beforeend",
-        `<tr>
+    tbody.insertAdjacentHTML(
+      "beforeend",
+      `<tr>
           <td>
             <time datetime="${entry.startedDateTime}" class="time">
               ${new Date(entry.startedDateTime).toLocaleTimeString()}
@@ -50,26 +46,29 @@ const handleCreateEntriesList = () => {
           </td>
           <td>${method}</td>
           <td>
-            <span class="status ${getStatusColor(status)}">
+            <span class="status ${statusClass}">
               ${status}
             </span>
           </td>
           <td class="endpoint" id="button-${index}"></td>
         </tr>
-        <tr class="hidden" id="report-${index}">
-          <td colspan="4">
-            Report...
-          </td>
+        <tr class="hidden report ${statusClass}" id="report-${index}">
+          <td colspan="4"></td>
         </tr>
         `
-      );
+    );
 
-      appendEndpointButton(index, target);
-    });
+    appendEndpointButton(index, entry);
   });
 };
 
 (() => {
+  chrome.devtools.network.onRequestFinished.addListener((request) => {
+    if (["xhr", "fetch"].includes(request._resourceType as string)) {
+      requests.push(request);
+    }
+  });
+
   const button = document.querySelector(ElementSelector.loadButton);
 
   if (!button)

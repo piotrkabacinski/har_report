@@ -5,23 +5,22 @@ body {
   font-size: 75%;
 }
 
-.redirect {
-  color: var(--yellow);
-}
-
 .status {
   text-shadow: 1px 1px var(--black);
 }
 
-.success {
+.status.redirect {
+  color: var(--yellow);
+}
+
+.status.success {
   color: var(--green);
 }
 
-.fail {
+.status.fail {
   color: var(--red);
 }
 
 .hidden {
   display: none;
 }
-

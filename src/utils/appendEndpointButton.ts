@@ -1,23 +1,39 @@
-export const appendEndpointButton = (index: number, url: URL): void => {
+import { createReport } from "./createReport";
+
+export const appendEndpointButton = (
+  index: number,
+  entry: chrome.devtools.network.Request
+): void => {
+  const td = document.querySelector<HTMLTableCellElement>(`#button-${index}`);
+
+  if (!td) throw `Button not found: "#button-${index}"`;
+
   const button = document.createElement("button");
+
+  const url = new URL(entry.request.url);
 
   button.classList.add("href-button");
   button.setAttribute("data-index", index.toString());
   button.innerText = url.href.replace(url.origin, "");
 
-  button.addEventListener("click", (e: PointerEvent) => {
+  button.addEventListener("click", async (e: PointerEvent) => {
     const index = (e.target as HTMLButtonElement).dataset.index;
 
-    const reportTd = document.querySelector(`#report-${index}`);
+    const reportTr = document.querySelector(`#report-${index}`);
 
-    if (!reportTd) throw `Report td not found: "#report-${index}"`;
+    if (!reportTr) throw `Report tr not found: "#report-${index}"`;
 
-    reportTd.classList.toggle("hidden");
+    const reportContent = reportTr.querySelector("td");
+
+    if (!reportContent) throw `Report td element not found`;
+
+    if (!reportContent.textContent) {
+      const report = await createReport(entry);
+      reportContent.innerHTML = report;
+    }
+
+    reportTr.classList.toggle("hidden");
   });
-
-  const td = document.querySelector<HTMLTableCellElement>(`#button-${index}`);
-
-  if (!td) throw `Button not found: "#button-${index}"`;
 
   td.appendChild(button);
 };

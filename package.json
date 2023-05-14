@@ -8,9 +8,13 @@
   },
   "devDependencies": {
     "@types/chrome": "0.0.235",
+    "@types/mustache": "^4.2.2",
     "esbuild": "0.17.19",
     "typescript": "^5.0.4"
   },
   "author": "Piotr Kabaciński",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mustache": "^4.2.0"
+  }
 }
