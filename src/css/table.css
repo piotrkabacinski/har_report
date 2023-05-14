@@ -1,0 +1,63 @@
+#table tr:nth-child(even) {
+  background: var(--dark-grey);
+}
+
+#table tbody tr:hover {
+  background: var(--highlight);
+}
+
+#table tbody tr.open {
+  background: var(--highlight);
+}
+
+.endpoint {
+  max-width: 0;
+  width: 100%;
+}
+
+#table {
+  border-collapse: collapse;
+}
+
+#table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+#table th,
+td {
+  padding: 5px;
+  text-align: left;
+}
+
+#table th {
+  opacity: 0.75;
+}
+
+#table th,
+td:not(.endpoint) {
+  width: 0;
+}
+
+#table td .time {
+  opacity: 0.75;
+}
+
+#table td button.href-button {
+  background: transparent;
+  border: 0;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 100%;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+#table td .report {
+  max-height: 300px;
+  overflow: auto;
+}

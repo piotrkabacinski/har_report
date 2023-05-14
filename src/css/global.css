@@ -1,0 +1,27 @@
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: system-ui, sans-serif;
+  font-size: 75%;
+}
+
+.redirect {
+  color: var(--yellow);
+}
+
+.status {
+  text-shadow: 1px 1px var(--black);
+}
+
+.success {
+  color: var(--green);
+}
+
+.fail {
+  color: var(--red);
+}
+
+.hidden {
+  display: none;
+}
+

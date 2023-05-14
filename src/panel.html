@@ -3,30 +3,35 @@
   <head>
     <title>Network Data Parser Panel</title>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <button type="button" id="load">Load</button>
     <p id="status"></p>
-    <table id="table">
+    <table id="table" class="hidden">
       <thead>
         <tr>
           <th>Time</th>
           <th>Method</th>
-          <th>Path</th>
           <th>Status</th>
+          <th>Path</th>
         </tr>
       </thead>
       <tbody>
-        <!--
-        <tr>
+        <!--  <tr>
           <td>
             <span class="time">17:20:01</span>
           </td>
           <td>POST</td>
-          <td>http://example.com</td>
           <td>
             <span class="success">200</span>
+          </td>
+          <td class="endpoint">
+            <button class="href-button">
+              /complete/search?q=css%20truncat&cp=11&client=gws-wiz-serp&xssi=t&hl=pl&authuser=0&pq=css%20truncate&psi=op9gZKqHKuHMrgTvjYdA.1684053923331&dpr=2
+            </button>
           </td>
         </tr>
         <tr class="open">
@@ -40,7 +45,8 @@
           <td>
             <span class="fail">500</span>
           </td>
-        </tr>
+        </tr> -->
+        <!--
         <tr class="open">
           <td colspan="4">
             <div class="report">
@@ -51,8 +57,7 @@
               <code>Invalid query</code>
             </div>
           </td>
-        </tr>
-        -->
+        </tr> -->
       </tbody>
     </table>
     <script src="panel.js"></script>

@@ -1,25 +1,31 @@
+import { setElementText } from "./utils/setElementText";
+import { getStatusColor } from "./utils/getStatusColor";
+
 enum ElementSelector {
   loadButton = "#load",
   status = "#status",
   table = "#table",
 }
 
-const setElementText = (selector: string, message: string) => {
-  const element = document.querySelector<HTMLElement>(selector);
-
-  element.innerText = message;
-};
-
 const handleCreateEntriesList = () => {
   chrome.devtools.network.getHAR(function (harLog) {
     setElementText(ElementSelector.status, "");
 
-    const entries = harLog.entries.filter((entry) => entry.response.status);
+    const entries = harLog.entries.filter(
+      (entry) =>
+        entry.response.status &&
+        ["xhr", "fetch"].includes(entry._resourceType as string)
+    );
+
+    const table = document.querySelector(ElementSelector.table);
 
     if (!entries.length) {
       setElementText(ElementSelector.status, "No entries available");
+      table.classList.add("hidden");
       return;
     }
+
+    table.classList.remove("hidden");
 
     setElementText(ElementSelector.status, `Entries: ${entries.length}`);
 
@@ -37,14 +43,20 @@ const handleCreateEntriesList = () => {
         "beforeend",
         `<tr>
           <td>
-            <span class="time">
+            <time datetime="${entry.startedDateTime}" class="time">
               ${new Date(entry.startedDateTime).toLocaleTimeString()}
-            </span>
+            </time>
           </td>
           <td>${method}</td>
-          <td>${target.href.replace(target.origin, "")}</td>
           <td>
-            <span class="${status < 400 ? "success" : "fail"}">${status}</span>
+            <span class="status ${getStatusColor(status)}">
+              ${status}
+            </span>
+          </td>
+          <td class="endpoint">
+            <button class="href-button">
+              ${target.href.replace(target.origin, "")}
+            </button>
           </td>
         </tr>`
       );
@@ -52,10 +64,17 @@ const handleCreateEntriesList = () => {
   });
 };
 
-const main = () => {
+(() => {
   const button = document.querySelector(ElementSelector.loadButton);
 
-  button.addEventListener("click", handleCreateEntriesList);
-};
+  if (!button)
+    throw `Button element (#${ElementSelector.loadButton}) not found.`;
 
-document.addEventListener("DOMContentLoaded", main);
+  document.addEventListener("DOMContentLoaded", () => {
+    button.addEventListener("click", handleCreateEntriesList);
+  });
+
+  document.addEventListener("beforeunload", () => {
+    button.removeEventListener("click", handleCreateEntriesList);
+  });
+})();

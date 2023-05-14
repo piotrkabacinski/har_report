@@ -1,1 +1,1 @@
-chrome.devtools.panels.create("Network data parser", null, "panel.html");
+chrome.devtools.panels.create("HAR Parser", null, "panel.html");

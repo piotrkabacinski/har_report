@@ -6,9 +6,9 @@
   "scripts": {
     "build": "sh build.sh"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/chrome": "0.0.235",
+    "esbuild": "0.17.19",
     "typescript": "^5.0.4"
   },
   "author": "Piotr Kabaciński",
