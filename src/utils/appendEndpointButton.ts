@@ -5,8 +5,14 @@ export const appendEndpointButton = (index: number, url: URL): void => {
   button.setAttribute("data-index", index.toString());
   button.innerText = url.href.replace(url.origin, "");
 
-  button.addEventListener("click", (e) => {
-    console.log(e);
+  button.addEventListener("click", (e: PointerEvent) => {
+    const index = (e.target as HTMLButtonElement).dataset.index;
+
+    const reportTd = document.querySelector(`#report-${index}`);
+
+    if (!reportTd) throw `Report td not found: "#report-${index}"`;
+
+    reportTd.classList.toggle("hidden");
   });
 
   const td = document.querySelector<HTMLTableCellElement>(`#button-${index}`);

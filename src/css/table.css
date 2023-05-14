@@ -2,7 +2,7 @@
   border-collapse: collapse;
 }
 
-#table tr:nth-child(even) {
+#table tr:nth-child(3n) {
   background: var(--dark-grey);
 }
 

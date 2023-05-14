@@ -55,7 +55,13 @@ const handleCreateEntriesList = () => {
             </span>
           </td>
           <td class="endpoint" id="button-${index}"></td>
-        </tr>`
+        </tr>
+        <tr class="hidden" id="report-${index}">
+          <td colspan="4">
+            Report...
+          </td>
+        </tr>
+        `
       );
 
       appendEndpointButton(index, target);
