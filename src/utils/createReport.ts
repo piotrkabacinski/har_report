@@ -1,8 +1,8 @@
 import mustache from "mustache";
-import { defaultTemplate } from "./defaultTemplate";
 
 export const createReport = async (
-  entry: chrome.devtools.network.Request
+  entry: chrome.devtools.network.Request,
+  template: string
 ): Promise<string> => {
   const text = await new Promise<string>((resolve) => {
     entry.getContent((body) => {
@@ -17,5 +17,5 @@ export const createReport = async (
 
   console.log("Report created for", entry.request.url);
 
-  return mustache.render(`<pre>${defaultTemplate.trim()}</pre>`, entry);
+  return mustache.render(`${template.trim()}`, entry);
 };

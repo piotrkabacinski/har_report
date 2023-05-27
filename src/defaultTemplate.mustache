@@ -1,0 +1,13 @@
+{{request.method}} {{response.status}} {{request.url}}
+{{#request.postData.text}}
+
+Payload:
+
+{{request.postData.text}}
+{{/request.postData.text}}
+{{#response.content.text}}
+
+Response:
+
+{{response.content.text}}
+{{/response.content.text}}

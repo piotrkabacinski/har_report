@@ -1,6 +1,8 @@
 import { setElementText } from "./utils/setElementText";
 import { getStatusClass } from "./utils/getStatusClass";
 import { appendEndpointButton } from "./utils/appendEndpointButton";
+import { getReportTemplate } from "./utils/getReportTemplate";
+import { isString } from "./utils/isString";
 
 enum ElementSelector {
   loadButton = "#load",
@@ -9,8 +11,9 @@ enum ElementSelector {
 }
 
 const requests: chrome.devtools.network.Request[] = [];
+const allowedResourceTypes: string[] = ["xhr", "fetch"];
 
-const handleCreateEntriesList = () => {
+const handleCreateEntriesList = async () => {
   const table = document.querySelector(ElementSelector.table);
 
   if (!requests.length) {
@@ -28,6 +31,8 @@ const handleCreateEntriesList = () => {
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);
 
   tbody.innerHTML = "";
+
+  const template = await getReportTemplate();
 
   requests.forEach(async (entry, index) => {
     const { status } = entry.response;
@@ -52,20 +57,28 @@ const handleCreateEntriesList = () => {
           <td class="endpoint" id="button-${index}"></td>
         </tr>
         <tr class="hidden report ${statusClass}" id="report-${index}">
-          <td colspan="4"></td>
+          <td colspan="4">
+            <pre></pre>
+          </td>
         </tr>
         `
     );
 
-    appendEndpointButton(index, entry);
+    appendEndpointButton(index, entry, template);
   });
 };
 
 (() => {
   chrome.devtools.network.onRequestFinished.addListener((request) => {
-    if (["xhr", "fetch"].includes(request._resourceType as string)) {
-      requests.push(request);
+    if (isString(request._resourceType)) {
+      if (allowedResourceTypes.includes(request._resourceType)) {
+        requests.push(request);
+      }
+
+      return;
     }
+
+    throw "request._resourceType value is not string";
   });
 
   const button = document.querySelector(ElementSelector.loadButton);

@@ -2,7 +2,8 @@ import { createReport } from "./createReport";
 
 export const appendEndpointButton = (
   index: number,
-  entry: chrome.devtools.network.Request
+  entry: chrome.devtools.network.Request,
+  template: string
 ): void => {
   const td = document.querySelector<HTMLTableCellElement>(`#button-${index}`);
 
@@ -23,12 +24,12 @@ export const appendEndpointButton = (
 
     if (!reportTr) throw `Report tr not found: "#report-${index}"`;
 
-    const reportContent = reportTr.querySelector("td");
+    const reportContent = reportTr.querySelector("pre");
 
-    if (!reportContent) throw `Report td element not found`;
+    if (!reportContent) throw `Report pre element not found`;
 
     if (!reportContent.textContent) {
-      const report = await createReport(entry);
+      const report = await createReport(entry, template);
       reportContent.innerHTML = report;
     }
 

@@ -61,6 +61,11 @@ td:not(.endpoint) {
   border-bottom: 1px solid;
 }
 
+#table tr.report td {
+  max-width: 0;
+  overflow: auto;
+}
+
 #table tr.report.success {
   border-bottom-color: var(--green);
 }

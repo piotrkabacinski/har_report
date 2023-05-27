@@ -2,7 +2,7 @@
 
 ## About
 
-Chromium extension for parsing [HAR](https://en.wikipedia.org/wiki/HAR_(file_format)) data and generating reports using predefined templates (`src/utils/defaultTemplate.ts`).
+Chromium extension for parsing [HAR](<https://en.wikipedia.org/wiki/HAR_(file_format)>) data and generating reports using predefined templates (default definition: `src/defaultTemplate.mustache`).
 
 Project is in early stage of development (proof of concept 🚧) and includes only `XHR` and `fetch` requests.
 
@@ -15,7 +15,9 @@ To test it, simply load project's `dist` content as browser [extension](https://
 ```
 npm i
 ```
+
 ```
 npm run build
 ```
+
 Each update requires manual update of the extension in the browser.
