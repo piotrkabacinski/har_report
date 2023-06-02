@@ -1,4 +1,4 @@
-export const getReportTemplate = async () => {
+export const getDefaultReportTemplate = async () => {
   const response = await fetch("./defaultTemplate.mustache");
 
   if (!response.body) throw Error();
