@@ -15,7 +15,5 @@ export const createReport = async (
     text,
   };
 
-  console.log("Report created for", entry.request.url);
-
   return mustache.render(`${template.trim()}`, entry);
 };

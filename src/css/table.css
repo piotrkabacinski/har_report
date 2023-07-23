@@ -59,6 +59,7 @@ td:not(.endpoint) {
 
 #table tr.report {
   border-bottom: 1px solid;
+  position: relative;
 }
 
 #table tr.report td {
@@ -83,4 +84,9 @@ td:not(.endpoint) {
   font-size: 0.75rem;
   max-height: 350px;
   overflow: auto;
+}
+
+#table button.copy {
+  position: absolute;
+  right: 5px;
 }

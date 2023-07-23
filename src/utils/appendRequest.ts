@@ -2,7 +2,10 @@ import { getStatusClass } from "./getStatusClass";
 import { appendEndpointButton } from "./appendEndpointButton";
 import { ElementSelector } from "../consts/ElementSelector";
 
-export const appendRequestEntry = (request: chrome.devtools.network.Request, index: number): void => {
+export const appendRequestEntry = (
+  request: chrome.devtools.network.Request,
+  index: number
+): void => {
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);
 
   const { status } = request.response;
@@ -28,6 +31,9 @@ export const appendRequestEntry = (request: chrome.devtools.network.Request, ind
     </tr>
     <tr class="hidden report ${statusClass}" id="report-${index}">
       <td colspan="4">
+        <button type="button" class="copy">
+          Copy
+        </button>
         <pre></pre>
       </td>
     </tr>

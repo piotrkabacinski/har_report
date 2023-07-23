@@ -1,5 +1,5 @@
-import { ElementSelector } from "../consts/ElementSelector"
-import { state } from "./state"
+import { ElementSelector } from "../consts/ElementSelector";
+import { state } from "./state";
 
 const toggleRecordingDot = (): void => {
   const dot = document.querySelector<HTMLDivElement>(ElementSelector.statusDot);
@@ -14,12 +14,14 @@ const toggleRecordingDot = (): void => {
   }
 
   dot.classList.remove(className);
-}
+};
 
-export const handleToggleRecording = (e: Event & { target: HTMLButtonElement}): void => {
+export const handleToggleRecording = (
+  e: Event & { target: HTMLButtonElement }
+): void => {
   state.isRecording = !state.isRecording;
 
   e.target.innerText = state.isRecording ? "Pause" : "Restore";
 
   toggleRecordingDot();
-}
+};
