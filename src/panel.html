@@ -8,10 +8,17 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <button type="button" id="load">Load</button>
-    <button type="button" id="reset">Reset</button>
+    <div class="actions">
+      <div class="recording-status">
+        <div id="status-dot" class="status-dot--recording"></div>
+        <button type="button" id="pause">Pause</button>
+      </div>
+
+      <button type="button" id="reset">Reset</button>
+    </div>
+
     <p id="status"></p>
-    <table id="table" class="hidden">
+    <table id="table">
       <thead>
         <tr>
           <th>Time</th>

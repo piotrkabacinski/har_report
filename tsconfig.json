@@ -11,7 +11,7 @@
     "outDir": "dist"
   },
   "include": [
-    "src/*.ts",
+    "src/*.ts", "src/utils/appendRequest.ts", "src/utils/state.ts",
   ],
   "exclude": ["node_modules"]
 }

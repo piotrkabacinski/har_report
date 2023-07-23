@@ -1,9 +1,12 @@
 :root {
   --black: #202124;
   --highlight: #4c4f57;
+  --light-gray: rgb(131, 131, 131);
   --dark-grey: #353535;
   --green: #4caf50;
   --red: #ff5722;
+  --medium-red: rgb(255, 0, 0);
+  --dark-red: rgb(217, 0, 0);
   --white: #fff;
   --yellow: yellow;
 }

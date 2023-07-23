@@ -1,6 +1,7 @@
 export enum ElementSelector {
-  loadButton = "#load",
+  pauseButton = "#pause",
   resetButton = "#reset",
   status = "#status",
   table = "#table",
+  statusDot = "#status-dot"
 }
