@@ -3,5 +3,6 @@ export enum ElementSelector {
   resetButton = "#reset",
   status = "#status",
   table = "#table",
-  statusDot = "#status-dot"
+  statusDot = "#status-dot",
+  settingsLink = "#settings-link"
 }

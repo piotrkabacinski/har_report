@@ -5,17 +5,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="panel.css" />
   </head>
   <body>
-    <div class="actions">
-      <div class="recording-status">
-        <div id="status-dot" class="status-dot--recording"></div>
-        <button type="button" id="pause">Pause</button>
-      </div>
+    <header class="header">
+      <div class="actions">
+        <div class="recording-status">
+          <div id="status-dot" class="status-dot--recording"></div>
+          <button type="button" id="pause">Pause</button>
+        </div>
 
-      <button type="button" id="reset">Reset</button>
-    </div>
+        <button type="button" id="reset">Reset</button>
+      </div>
+      <div>
+        ⚙️ <a href="#" target="_blank" class="link" id="settings-link">Settings </a>
+      </div>
+    </header>
 
     <p id="status"></p>
     <table id="table">

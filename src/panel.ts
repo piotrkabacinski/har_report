@@ -1,4 +1,3 @@
-
 import { appendRequestEntry } from "./utils/appendRequest";
 import { ElementSelector } from "./consts/ElementSelector";
 import { handleResetEntriesList } from "./utils/handleResetEntriesList";
@@ -7,12 +6,14 @@ import { isString } from "./utils/isString";
 import { setEntriesAmount } from "./utils/setEntriesAmount";
 import { state } from "./utils/state";
 import { handleToggleRecording } from "./utils/handleToggleRecording";
+import { getFileUrl } from "./utils/getFileUrl";
 
 {
   chrome.devtools.network.onRequestFinished.addListener((request): void => {
     if (!state.isRecording) return;
 
-    if (!isString(request._resourceType)) throw "request._resourceType value is not string";
+    if (!isString(request._resourceType))
+      throw "request._resourceType value is not string";
 
     if (!state.allowedResourceTypes.includes(request._resourceType)) return;
 
@@ -23,8 +24,20 @@ import { handleToggleRecording } from "./utils/handleToggleRecording";
     setEntriesAmount(entriesAmount);
   });
 
+  document.addEventListener("beforeunload", () => {
+    state.requests.length = 0;
+  });
+
   document.addEventListener("DOMContentLoaded", () => {
     hydrateButton(ElementSelector.resetButton, handleResetEntriesList);
     hydrateButton(ElementSelector.pauseButton, handleToggleRecording);
+
+    const settingsLink = document.querySelector<HTMLAnchorElement>(
+      ElementSelector.settingsLink
+    );
+
+    if (settingsLink) {
+      settingsLink.href = getFileUrl("settings.html");
+    }
   });
 }

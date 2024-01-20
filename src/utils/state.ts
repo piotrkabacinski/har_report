@@ -8,6 +8,3 @@ export const state: {
   allowedResourceTypes: ["xhr", "fetch"],
 };
 
-document.addEventListener("beforeunload", () => {
-  state.requests.length = 0;
-});
