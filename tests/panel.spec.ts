@@ -1,34 +1,38 @@
 import { test, expect } from "@playwright/test";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import {
-  chrome,
-  resetOnRequestFinishedCallback,
-  onRequestFinishedCallback,
-} from "./chrome.mock.js";
+import { createNetworkRequest } from "./utils/createNetworkRequest";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 test.describe("Panel", () => {
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript({ path: `${__dirname}/chrome.mock.js` });
+    await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
     await page.goto(`file:///${__dirname}/../.test_build/panel.html`);
   });
 
-  test.afterEach(() => {
-    resetOnRequestFinishedCallback();
+  test.afterEach(async ({ page }) => {
+    await page.evaluate(() => {
+      (window as any).__test_utils.resetOnRequestFinishedCallback();
+    });
   });
 
-  test("Render h1 message", async ({ page }) => {
-    const h1 = page.locator("h1");
+  test("Render requests table", async ({ page }) => {
+    const table = page.locator("table");
 
-    const text = await h1.textContent();
+    expect(table).toBeDefined();
+  });
 
-    chrome.devtools.network.onRequestFinished.addListener((request) => {
-      console.log(request);
-    });
+  test("Render response item in the table", async ({ page }) => {
+    await page.evaluate((request) => {
+      (window as any).__test_utils.onRequestFinishedCallback(request);
+    }, createNetworkRequest());
 
-    expect(text).toBe("Panel");
+    const tr = await page.evaluate(() =>
+      document.querySelector("table tbody tr")
+    );
+
+    expect(tr).toBeDefined();
   });
 });

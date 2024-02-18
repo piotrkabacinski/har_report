@@ -1,4 +1,3 @@
-tsc ./tests/chrome.mock.ts --target esnext --moduleResolution node16 &&
 export OUT_DIR=".test_build" &&
 sh build.sh &&
 playwright test
