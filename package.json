@@ -4,7 +4,8 @@
   "description": "",
   "main": "",
   "scripts": {
-    "build": "sh build.sh"
+    "build": "OUT_DIR='dist' sh build.sh",
+    "test_build": "OUT_DIR='.test_build' sh build.sh"
   },
   "devDependencies": {
     "@types/chrome": "0.0.235",
