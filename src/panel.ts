@@ -12,19 +12,15 @@ import { handleToggleRecording } from "./utils/handleToggleRecording";
   chrome.devtools.network.onRequestFinished.addListener((request): void => {
     if (!state.isRecording) return;
 
-    try {
-      if (!isString(request._resourceType)) throw "request._resourceType value is not string";
+    if (!isString(request._resourceType)) throw "request._resourceType value is not string";
 
-      if (!state.allowedResourceTypes.includes(request._resourceType)) return;
-  
-      const entriesAmount = state.requests.push(request);
-  
-      appendRequestEntry(request, entriesAmount - 1);
-  
-      setEntriesAmount(entriesAmount);
-    } catch (err) {
-      document.querySelector("body").innerHTML = err.toString();
-    }
+    if (!state.allowedResourceTypes.includes(request._resourceType)) return;
+
+    const entriesAmount = state.requests.push(request);
+
+    appendRequestEntry(request, entriesAmount - 1);
+
+    setEntriesAmount(entriesAmount);
   });
 
   document.addEventListener("DOMContentLoaded", () => {

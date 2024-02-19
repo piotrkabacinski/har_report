@@ -31,8 +31,6 @@ export const appendEndpointButton = ({
   const callback = async () => {
     const reportContent = reportTr.querySelector("pre");
 
-    debugger;
-
     if (!reportContent) throw `Report pre element not found`;
 
     const template = await getDefaultReportTemplate();
