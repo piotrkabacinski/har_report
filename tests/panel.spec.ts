@@ -176,9 +176,35 @@ test.describe("Panel", () => {
   test("Pause and restore events listening", async ({ page }) => {
     const entry = createNetworkRequestEntry();
 
+    let buttonText = await page.evaluate(
+      () => document.querySelector("#pause")?.textContent
+    );
+
+    let isStatusDotActive = await page.evaluate(() =>
+      document
+        .querySelector("#status-dot")
+        ?.classList.contains("status-dot--recording")
+    );
+
+    expect(buttonText).toBe("Pause");
+    expect(isStatusDotActive).toBe(true);
+
     await page.evaluate(() => {
       document.querySelector("#pause")?.dispatchEvent(new Event("click"));
     });
+
+    buttonText = await page.evaluate(
+      () => document.querySelector("#pause")?.textContent
+    );
+
+    isStatusDotActive = await page.evaluate(() =>
+      document
+        .querySelector("#status-dot")
+        ?.classList.contains("status-dot--recording")
+    );
+
+    expect(buttonText).toBe("Restore");
+    expect(isStatusDotActive).toBe(false);
 
     await page.evaluate(
       ([entry, testScopeKey]: any[]) => {
@@ -193,6 +219,7 @@ test.describe("Panel", () => {
 
     expect(tr).toBeNull();
 
+    // Restore:
     await page.evaluate(() => {
       document.querySelector("#pause")?.dispatchEvent(new Event("click"));
     });
@@ -213,5 +240,20 @@ test.describe("Panel", () => {
     tr = await page.evaluate(() => document.querySelector("table tbody tr"));
 
     expect(tr).not.toBeNull();
+
+    buttonText = await page.evaluate(
+      () => document.querySelector("#pause")?.textContent
+    );
+
+    isStatusDotActive = await page.evaluate(() =>
+      document
+        .querySelector("#status-dot")
+        ?.classList.contains("status-dot--recording")
+    );
+
+    expect(buttonText).toBe("Pause");
+    expect(isStatusDotActive).toBe(true);
   });
+
+  // TODO: Filter out invalid resource type entries
 });
