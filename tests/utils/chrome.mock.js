@@ -1,18 +1,22 @@
-window.__test_utils = {
-  onRequestFinishedCallback: undefined,
-  resetOnRequestFinishedCallback: () => {
-    this.onRequestFinishedCallback = undefined;
-  },
-};
+{
+  const testScopeKey = "__mock_utils";
 
-window.chrome = {
-  devtools: {
-    network: {
-      onRequestFinished: {
-        addListener: (cb) => {
-          window.__test_utils.onRequestFinishedCallback = cb;
+  window[testScopeKey] = {
+    onRequestFinishedCallback: undefined,
+    resetOnRequestFinishedCallback: () => {
+      this.onRequestFinishedCallback = undefined;
+    },
+  };
+
+  window.chrome = {
+    devtools: {
+      network: {
+        onRequestFinished: {
+          addListener: (cb) => {
+            window[testScopeKey].onRequestFinishedCallback = cb;
+          },
         },
       },
     },
-  },
-};
+  };
+}

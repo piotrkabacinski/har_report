@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 export const createRequest = (
   request: Partial<chrome.devtools.network.Request["request"]> = {}
 ): chrome.devtools.network.Request["request"] => ({
-  method: faker.helpers.arrayElement(["GET", "POST", "PATCH", "PUT"]),
+  method: faker.internet.httpMethod(),
   url: faker.internet.url(),
   queryString: [],
   cookies: [],
@@ -17,7 +17,7 @@ export const createRequest = (
 export const createResponse = (
   response: Partial<chrome.devtools.network.Request["response"]> = {}
 ): chrome.devtools.network.Request["response"] => ({
-  status: faker.helpers.arrayElement([200, 404, 500, 422]),
+  status: faker.internet.httpStatusCode(),
   statusText: "",
   httpVersion: "h3",
   headers: [],
@@ -25,7 +25,7 @@ export const createResponse = (
   content: {
     size: faker.number.int({ max: 1000 }),
     mimeType: "text/html",
-    text: faker.hacker.phrase(),
+    text: `<p>${faker.hacker.phrase()}</p>`,
   },
   redirectURL: "",
   headersSize: -1,
@@ -34,7 +34,7 @@ export const createResponse = (
   ...response,
 });
 
-export const createNetworkRequest = (
+export const createNetworkRequestEntry = (
   request: Partial<chrome.devtools.network.Request> = {}
 ): Partial<chrome.devtools.network.Request> => ({
   _resourceType: faker.helpers.arrayElement(["xhr", "fetch"]),

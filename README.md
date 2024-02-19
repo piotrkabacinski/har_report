@@ -12,11 +12,15 @@ To test it, simply load project's `dist` content as browser [extension](https://
 
 ## Development
 
-```
+```bash
 npm i
 ```
 
+```bash
+npm t
 ```
+
+```bash
 npm run build
 ```
 
