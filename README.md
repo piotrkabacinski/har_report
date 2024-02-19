@@ -17,6 +17,9 @@ npm i
 ```
 
 ```bash
+# Playwright needs only chromium for testing, it can be installed manually:
+npx playwright install chromium
+
 npm t
 ```
 

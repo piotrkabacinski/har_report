@@ -35,11 +35,12 @@ export const createResponse = (
 });
 
 export const createNetworkRequestEntry = (
-  request: Partial<chrome.devtools.network.Request> = {}
+  entry: Partial<chrome.devtools.network.Request> = {}
 ): Partial<chrome.devtools.network.Request> => ({
   _resourceType: faker.helpers.arrayElement(["xhr", "fetch"]),
   startedDateTime: faker.date.anytime().toISOString(),
   request: createRequest(),
   response: createResponse(),
-  ...request,
+  getContent: () => Promise.resolve(`<p>${faker.hacker.phrase()}</p>`),
+  ...entry,
 });

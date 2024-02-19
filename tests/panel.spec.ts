@@ -1,11 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import {
-  createNetworkRequestEntry,
-  createResponse,
-  createRequest,
-} from "./utils/createNetworkRequestEntry";
+import { createNetworkRequestEntry } from "./utils/createNetworkRequestEntry";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -97,4 +93,8 @@ test.describe("Panel", () => {
       expect(entryItems[index].innerText).toBe(expects[index]);
     }
   });
+
+  // TODO: Toggles and shows details
+  // TODO: Clears out entries
+  // TODO: Pause entries from displaying
 });
