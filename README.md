@@ -12,11 +12,18 @@ To test it, simply load project's `dist` content as browser [extension](https://
 
 ## Development
 
-```
+```bash
 npm i
 ```
 
+```bash
+# Playwright needs only chromium for testing, it can be installed manually:
+npx playwright install chromium
+
+npm t
 ```
+
+```bash
 npm run build
 ```
 

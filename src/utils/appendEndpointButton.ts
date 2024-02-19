@@ -1,7 +1,6 @@
 import { createReport } from "./createReport";
 import { getDefaultReportTemplate } from "./getDefaultReportTemplate";
 import { hydrateButton } from "./hydrateButton";
-import { setElementText } from "./setElementText";
 import { writeToClipboard } from "./writeToClipboard";
 
 export const appendEndpointButton = ({

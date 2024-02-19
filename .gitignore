@@ -1,3 +1,9 @@
 /node_modules
 /.vscode
 /mocks
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.test_build
+/tests/chrome.mock.js
