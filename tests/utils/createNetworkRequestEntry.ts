@@ -25,7 +25,6 @@ export const createResponse = (
   content: {
     size: faker.number.int({ max: 1000 }),
     mimeType: "text/html",
-    text: `<p>${faker.hacker.phrase()}</p>`,
   },
   redirectURL: "",
   headersSize: -1,
@@ -41,6 +40,6 @@ export const createNetworkRequestEntry = (
   startedDateTime: faker.date.anytime().toISOString(),
   request: createRequest(),
   response: createResponse(),
-  getContent: () => Promise.resolve(`<p>${faker.hacker.phrase()}</p>`),
+  // getContent function has to be defined within the page.evaluate body
   ...entry,
 });

@@ -1,7 +1,6 @@
 import { createReport } from "./createReport";
 import { getDefaultReportTemplate } from "./getDefaultReportTemplate";
 import { hydrateButton } from "./hydrateButton";
-import { setElementText } from "./setElementText";
 import { writeToClipboard } from "./writeToClipboard";
 
 export const appendEndpointButton = ({
@@ -31,6 +30,8 @@ export const appendEndpointButton = ({
 
   const callback = async () => {
     const reportContent = reportTr.querySelector("pre");
+
+    debugger;
 
     if (!reportContent) throw `Report pre element not found`;
 
