@@ -94,7 +94,7 @@ test.describe("Panel", () => {
     }
   });
 
-  test.only("Toggles response report", async ({ page }) => {
+  test("Toggle response report", async ({ page }) => {
     const entry = createNetworkRequestEntry();
     const content = `<p>${faker.hacker.noun()}</p>`;
 
@@ -140,6 +140,78 @@ test.describe("Panel", () => {
     expect(reportContent?.match(`${entry.request?.url}`)).not.toBe(null);
   });
 
-  // TODO: Clears out entries
-  // TODO: Pause entries from displaying
+  test("Clear out entries", async ({ page }) => {
+    const entry = createNetworkRequestEntry();
+
+    await page.evaluate(
+      ([entry, testScopeKey]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+      },
+      [entry, testScopeKey]
+    );
+
+    let counter = await page.evaluate(
+      () => document.querySelector("#status")?.textContent
+    );
+
+    expect(counter).toBe("Entries: 1");
+
+    await page.evaluate(() => {
+      document.querySelector("#reset")?.dispatchEvent(new Event("click"));
+    });
+
+    counter = await page.evaluate(
+      () => document.querySelector("#status")?.textContent
+    );
+
+    expect(counter).toBe("Entries: 0");
+
+    const tr = await page.evaluate(() =>
+      document.querySelector("table tbody tr")
+    );
+
+    expect(tr).toBeNull();
+  });
+
+  test("Pause and restore events listening", async ({ page }) => {
+    const entry = createNetworkRequestEntry();
+
+    await page.evaluate(() => {
+      document.querySelector("#pause")?.dispatchEvent(new Event("click"));
+    });
+
+    await page.evaluate(
+      ([entry, testScopeKey]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+      },
+      [entry, testScopeKey]
+    );
+
+    let tr = await page.evaluate(() =>
+      document.querySelector("table tbody tr")
+    );
+
+    expect(tr).toBeNull();
+
+    await page.evaluate(() => {
+      document.querySelector("#pause")?.dispatchEvent(new Event("click"));
+    });
+
+    await page.evaluate(
+      ([entry, testScopeKey]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+      },
+      [entry, testScopeKey]
+    );
+
+    const counter = await page.evaluate(
+      () => document.querySelector("#status")?.textContent
+    );
+
+    expect(counter).toBe("Entries: 1");
+
+    tr = await page.evaluate(() => document.querySelector("table tbody tr"));
+
+    expect(tr).not.toBeNull();
+  });
 });
