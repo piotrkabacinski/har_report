@@ -1,5 +1,5 @@
 form {
-  textarea#report-template {
+  #report-template {
     background: var(--super-dark-grey);
     border-width: 0;
     box-sizing: border-box;
@@ -15,8 +15,8 @@ form {
       outline: 0;
     }
   }
+}
 
-  label {
-    opacity: 0.75;
-  }
+label {
+  opacity: 0.75;
 }

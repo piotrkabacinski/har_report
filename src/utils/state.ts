@@ -7,4 +7,3 @@ export const state: {
   isRecording: true,
   allowedResourceTypes: ["xhr", "fetch"],
 };
-

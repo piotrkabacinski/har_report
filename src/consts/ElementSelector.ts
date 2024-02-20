@@ -7,5 +7,5 @@ export enum ElementSelector {
   settingsLink = "#settings-link",
   reportTemplate = "#report-template",
   restoreTemplateButton = "#restore-template",
-  submitFormButton = "form button[type='submit']"
+  submitButton = "form button[type='submit']"
 }
