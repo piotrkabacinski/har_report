@@ -13,7 +13,7 @@ const testScopeKey = "__mock_utils";
 test.describe("Panel", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
-    await page.goto(`http://127.0.0.1:8080/panel.html`);
+    await page.goto(`/panel.html`);
   });
 
   test.afterEach(async ({ page }) => {
@@ -255,5 +255,50 @@ test.describe("Panel", () => {
     expect(isStatusDotActive).toBe(true);
   });
 
-  // TODO: Filter out invalid resource type entries
+  test("Filter out invalid resource type entries", async ({ page }) => {
+    const entry = createNetworkRequestEntry();
+    const invalidEntry = createNetworkRequestEntry({
+      _resourceType: "foo",
+    });
+
+    await page.evaluate(
+      ([entry, invalidEntry, testScopeKey]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+        (window as any)[testScopeKey].onRequestFinishedCallback(invalidEntry);
+      },
+      [entry, invalidEntry, testScopeKey]
+    );
+
+    const tr = await page.evaluate(() =>
+      document.querySelector("table tbody tr")
+    );
+
+    const counter = await page.evaluate(
+      () => document.querySelector("#status")?.textContent
+    );
+
+    const entryItems = await page.evaluate(() => {
+      return Array.from(
+        document.querySelector("table tbody tr")!.querySelectorAll("td")
+      ).map(({ innerText }) => ({
+        innerText,
+      }));
+    });
+
+    expect(tr).toBeDefined();
+    expect(counter).toBe("Entries: 1");
+
+    const expects = [
+      undefined,
+      entry.request?.method,
+      entry.response?.status.toString(),
+      "/",
+    ];
+
+    for (const index in entryItems) {
+      if (index === "0") continue;
+
+      expect(entryItems[index].innerText).toBe(expects[index]);
+    }
+  });
 });
