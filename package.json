@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "export OUT_DIR='dist' && sh build.sh",
-    "test": "sh test.sh"
+    "test": "sh test.sh",
+    "start": "http-server dist/"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

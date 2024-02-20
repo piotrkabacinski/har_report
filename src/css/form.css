@@ -1,0 +1,22 @@
+form {
+  textarea#report-template {
+    background: var(--super-dark-grey);
+    border-width: 0;
+    box-sizing: border-box;
+    color: var(--white);
+    font-family: "Courier New", Courier, monospace;
+    margin-top: 5px;
+    max-width: 100%;
+    min-height: 280px;
+    min-width: 100%;
+    padding: 10px;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  label {
+    opacity: 0.75;
+  }
+}

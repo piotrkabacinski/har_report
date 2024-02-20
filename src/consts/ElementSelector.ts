@@ -4,5 +4,8 @@ export enum ElementSelector {
   status = "#status",
   table = "#table",
   statusDot = "#status-dot",
-  settingsLink = "#settings-link"
+  settingsLink = "#settings-link",
+  reportTemplate = "#report-template",
+  restoreTemplateButton = "#restore-template",
+  submitFormButton = "form button[type='submit']"
 }

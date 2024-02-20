@@ -9,6 +9,9 @@
   };
 
   window.chrome = {
+    runtime: {
+      id: "mock"
+    },
     devtools: {
       network: {
         onRequestFinished: {

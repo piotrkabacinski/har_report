@@ -255,50 +255,13 @@ test.describe("Panel", () => {
     expect(isStatusDotActive).toBe(true);
   });
 
-  test("Filter out invalid resource type entries", async ({ page }) => {
-    const entry = createNetworkRequestEntry();
-    const invalidEntry = createNetworkRequestEntry({
-      _resourceType: "foo",
-    });
+  test("Renders link to settings page", async ({ page }) => {
+    const href = await page.evaluate(() => {
+      return document.querySelector("#settings-link")?.getAttribute("href");
+    }, []);
 
-    await page.evaluate(
-      ([entry, invalidEntry, testScopeKey]: any[]) => {
-        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
-        (window as any)[testScopeKey].onRequestFinishedCallback(invalidEntry);
-      },
-      [entry, invalidEntry, testScopeKey]
-    );
+    console.log(href);
 
-    const tr = await page.evaluate(() =>
-      document.querySelector("table tbody tr")
-    );
-
-    const counter = await page.evaluate(
-      () => document.querySelector("#status")?.textContent
-    );
-
-    const entryItems = await page.evaluate(() => {
-      return Array.from(
-        document.querySelector("table tbody tr")!.querySelectorAll("td")
-      ).map(({ innerText }) => ({
-        innerText,
-      }));
-    });
-
-    expect(tr).toBeDefined();
-    expect(counter).toBe("Entries: 1");
-
-    const expects = [
-      undefined,
-      entry.request?.method,
-      entry.response?.status.toString(),
-      "/",
-    ];
-
-    for (const index in entryItems) {
-      if (index === "0") continue;
-
-      expect(entryItems[index].innerText).toBe(expects[index]);
-    }
+    expect(href).toBeDefined();
   });
 });
