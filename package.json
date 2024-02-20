@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "",
+  "type": "module",
   "scripts": {
-    "build": "OUT_DIR='dist' sh build.sh",
-    "test_build": "OUT_DIR='.test_build' sh build.sh"
+    "build": "export OUT_DIR='dist' && sh build.sh",
+    "test": "sh test.sh"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@playwright/test": "^1.41.2",
     "@types/chrome": "0.0.235",
     "@types/mustache": "^4.2.2",
+    "@types/node": "^20.11.19",
     "esbuild": "0.17.19",
+    "http-server": "^14.1.1",
     "typescript": "^5.0.4"
   },
   "author": "Piotr Kabaciński",
