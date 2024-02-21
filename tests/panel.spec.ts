@@ -19,6 +19,7 @@ test.describe("Panel", () => {
   test.afterEach(async ({ page }) => {
     await page.evaluate((testScopeKey) => {
       (window as any)[testScopeKey].resetOnRequestFinishedCallback();
+      (window as any)[testScopeKey].resetStorage();
     }, testScopeKey);
   });
 
@@ -94,7 +95,7 @@ test.describe("Panel", () => {
     }
   });
 
-  test("Toggle response report", async ({ page }) => {
+  test("Toggle response report with default template", async ({ page }) => {
     const entry = createNetworkRequestEntry();
     const content = `<p>${faker.hacker.noun()}</p>`;
 
@@ -122,7 +123,7 @@ test.describe("Panel", () => {
         ?.dispatchEvent(new Event("click"));
     });
 
-    await sleep(50);
+    await sleep(10);
 
     isReportHidden = await page.evaluate(() =>
       document.querySelector("#report-0")?.classList.contains("hidden")
@@ -138,6 +139,44 @@ test.describe("Panel", () => {
     expect(reportContent?.match(`${entry.response?.status}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.method}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.url}`)).not.toBe(null);
+  });
+
+  test("Toggle response report with custom template", async ({ page }) => {
+    const entry = createNetworkRequestEntry();
+    const content = `<p>${faker.hacker.noun()}</p>`;
+    const customTemplate = "Custom {{response.content.text}}";
+
+    await page.evaluate(
+      ([entry, testScopeKey, content, customTemplate]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb(content);
+          },
+        });
+
+        (window as any).chrome.storage.local.set({
+          har_parser_settings: {
+            template: customTemplate,
+          },
+        });
+      },
+      [entry, testScopeKey, content, customTemplate]
+    );
+
+    await page.evaluate(() => {
+      document
+        .querySelector("#button-0 > button")
+        ?.dispatchEvent(new Event("click"));
+    });
+
+    await sleep(10);
+
+    const reportContent = await page.evaluate(
+      () => document.querySelector("#report-0 td pre")?.textContent
+    );
+
+    expect(reportContent).toBe(`Custom ${content}`);
   });
 
   test("Clear out entries", async ({ page }) => {
@@ -255,12 +294,10 @@ test.describe("Panel", () => {
     expect(isStatusDotActive).toBe(true);
   });
 
-  test("Renders link to settings page", async ({ page }) => {
+  test("Render link to settings page", async ({ page }) => {
     const href = await page.evaluate(() => {
       return document.querySelector("#settings-link")?.getAttribute("href");
     }, []);
-
-    console.log(href);
 
     expect(href).toBeDefined();
   });
