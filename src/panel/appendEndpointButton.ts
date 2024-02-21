@@ -1,6 +1,6 @@
 import { createReport } from "./createReport";
-import { getReportTemplate } from "./getReportTemplate";
-import { hydrateButton } from "./hydrateButton";
+import { getReportTemplate } from "../utils/getReportTemplate";
+import { hydrateButton } from "../utils/hydrateButton";
 import { writeToClipboard } from "./writeToClipboard";
 
 export const appendEndpointButton = ({

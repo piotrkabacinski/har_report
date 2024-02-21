@@ -1,5 +1,5 @@
 import { ElementSelector } from "../consts/ElementSelector";
-import { state } from "./state";
+import { state } from "../utils/state";
 
 const toggleRecordingDot = (): void => {
   const dot = document.querySelector<HTMLDivElement>(ElementSelector.statusDot);

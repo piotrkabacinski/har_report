@@ -1,4 +1,4 @@
-import { state } from "./state";
+import { state } from "../utils/state";
 import { ElementSelector } from "../consts/ElementSelector";
 import { setEntriesAmount } from "./setEntriesAmount";
 

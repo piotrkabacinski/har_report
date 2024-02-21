@@ -1,12 +1,12 @@
-import { appendRequestEntry } from "./utils/appendRequest";
-import { ElementSelector } from "./consts/ElementSelector";
-import { handleResetEntriesList } from "./utils/handleResetEntriesList";
-import { hydrateButton } from "./utils/hydrateButton";
-import { isString } from "./utils/isString";
-import { setEntriesAmount } from "./utils/setEntriesAmount";
-import { state } from "./utils/state";
-import { handleToggleRecording } from "./utils/handleToggleRecording";
-import { getFileUrl } from "./utils/getFileUrl";
+import { appendRequestEntry } from "./appendRequest";
+import { ElementSelector } from "../consts/ElementSelector";
+import { handleResetEntriesList } from "./handleResetEntriesList";
+import { hydrateButton } from "../utils/hydrateButton";
+import { isString } from "../utils/isString";
+import { setEntriesAmount } from "./setEntriesAmount";
+import { state } from "../utils/state";
+import { handleToggleRecording } from "./handleToggleRecording";
+import { getFileUrl } from "../utils/getFileUrl";
 
 {
   chrome.devtools.network.onRequestFinished.addListener((request): void => {

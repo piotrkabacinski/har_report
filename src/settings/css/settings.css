@@ -1,6 +1,6 @@
-@import url("css/colors.css");
-@import url("css/global.css");
-@import url("css/form.css");
+@import url("../../css/colors.css");
+@import url("../../css/global.css");
+@import url("form.css");
 
 form,
 header {
