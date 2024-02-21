@@ -5,22 +5,11 @@ body {
   font-size: 75%;
 }
 
-.status {
-  text-shadow: 1px 1px var(--black);
-}
+.link {
+  color: var(--white);
+  text-decoration: none;
 
-.status.redirect {
-  color: var(--yellow);
-}
-
-.status.success {
-  color: var(--green);
-}
-
-.status.fail {
-  color: var(--red);
-}
-
-.hidden {
-  display: none;
+  &:hover {
+    text-decoration: underline;
+  }
 }

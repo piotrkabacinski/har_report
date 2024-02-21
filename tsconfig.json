@@ -10,8 +10,6 @@
     "types": ["chrome"],
     "outDir": "dist"
   },
-  "include": [
-    "src/*.ts",
-  ],
+  "include": ["src/*.ts", "src/settings/settings.ts", "src/panel/panel.ts"],
   "exclude": ["node_modules"]
 }

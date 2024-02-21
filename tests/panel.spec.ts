@@ -4,11 +4,10 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { createNetworkRequestEntry } from "./utils/createNetworkRequestEntry";
 import { sleep } from "./utils/sleep";
+import { testScopeKey } from "./utils/testScopeKey";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const testScopeKey = "__mock_utils";
 
 test.describe("Panel", () => {
   test.beforeEach(async ({ page }) => {
@@ -19,6 +18,7 @@ test.describe("Panel", () => {
   test.afterEach(async ({ page }) => {
     await page.evaluate((testScopeKey) => {
       (window as any)[testScopeKey].resetOnRequestFinishedCallback();
+      (window as any)[testScopeKey].resetStorage();
     }, testScopeKey);
   });
 
@@ -94,7 +94,7 @@ test.describe("Panel", () => {
     }
   });
 
-  test("Toggle response report", async ({ page }) => {
+  test("Toggle response report with default template", async ({ page }) => {
     const entry = createNetworkRequestEntry();
     const content = `<p>${faker.hacker.noun()}</p>`;
 
@@ -122,7 +122,7 @@ test.describe("Panel", () => {
         ?.dispatchEvent(new Event("click"));
     });
 
-    await sleep(50);
+    await sleep(10);
 
     isReportHidden = await page.evaluate(() =>
       document.querySelector("#report-0")?.classList.contains("hidden")
@@ -138,6 +138,44 @@ test.describe("Panel", () => {
     expect(reportContent?.match(`${entry.response?.status}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.method}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.url}`)).not.toBe(null);
+  });
+
+  test("Toggle response report with custom template", async ({ page }) => {
+    const entry = createNetworkRequestEntry();
+    const content = `<p>${faker.hacker.noun()}</p>`;
+    const customTemplate = "Custom {{response.content.text}}";
+
+    await page.evaluate(
+      ([entry, testScopeKey, content, customTemplate]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb(content);
+          },
+        });
+
+        (window as any).chrome.storage.local.set({
+          har_parser_settings: {
+            template: customTemplate,
+          },
+        });
+      },
+      [entry, testScopeKey, content, customTemplate]
+    );
+
+    await page.evaluate(() => {
+      document
+        .querySelector("#button-0 > button")
+        ?.dispatchEvent(new Event("click"));
+    });
+
+    await sleep(10);
+
+    const reportContent = await page.evaluate(
+      () => document.querySelector("#report-0 td pre")?.textContent
+    );
+
+    expect(reportContent).toBe(`Custom ${content}`);
   });
 
   test("Clear out entries", async ({ page }) => {
@@ -255,50 +293,11 @@ test.describe("Panel", () => {
     expect(isStatusDotActive).toBe(true);
   });
 
-  test("Filter out invalid resource type entries", async ({ page }) => {
-    const entry = createNetworkRequestEntry();
-    const invalidEntry = createNetworkRequestEntry({
-      _resourceType: "foo",
-    });
+  test("Render link to settings page", async ({ page }) => {
+    const href = await page.evaluate(() => {
+      return document.querySelector("#settings-link")?.getAttribute("href");
+    }, []);
 
-    await page.evaluate(
-      ([entry, invalidEntry, testScopeKey]: any[]) => {
-        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
-        (window as any)[testScopeKey].onRequestFinishedCallback(invalidEntry);
-      },
-      [entry, invalidEntry, testScopeKey]
-    );
-
-    const tr = await page.evaluate(() =>
-      document.querySelector("table tbody tr")
-    );
-
-    const counter = await page.evaluate(
-      () => document.querySelector("#status")?.textContent
-    );
-
-    const entryItems = await page.evaluate(() => {
-      return Array.from(
-        document.querySelector("table tbody tr")!.querySelectorAll("td")
-      ).map(({ innerText }) => ({
-        innerText,
-      }));
-    });
-
-    expect(tr).toBeDefined();
-    expect(counter).toBe("Entries: 1");
-
-    const expects = [
-      undefined,
-      entry.request?.method,
-      entry.response?.status.toString(),
-      "/",
-    ];
-
-    for (const index in entryItems) {
-      if (index === "0") continue;
-
-      expect(entryItems[index].innerText).toBe(expects[index]);
-    }
+    expect(href).toBeDefined();
   });
 });

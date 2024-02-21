@@ -1,3 +1,7 @@
+.actions {
+  flex: 1;
+}
+
 .actions,
 .recording-status {
   display: flex;

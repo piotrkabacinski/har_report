@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HAR Parser settings</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="settings/css/settings.css" />
+  </head>
+  <body>
+    <header>
+      <h1>HAR Parser settings</h1>
+    </header>
+
+    <main>
+      <form class="form">
+        <label>Report template</label>
+        <textarea
+          id="report-template"
+          spellcheck="false"
+          required
+          placeholder="Loading..."
+          name="template"
+          disabled
+        ></textarea>
+
+        <div class="submit-wrapper">
+          <button type="button" id="restore-template">Restore default</button>
+          <button type="submit">Save</button>
+        </div>
+      </form>
+    </main>
+
+    <script src="settings/settings.js"></script>
+  </body>
+</html>

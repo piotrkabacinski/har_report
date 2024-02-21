@@ -1,0 +1,17 @@
+@import url("../../css/colors.css");
+@import url("../../css/global.css");
+@import url("form.css");
+
+form,
+header {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.submit-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 5px;
+}

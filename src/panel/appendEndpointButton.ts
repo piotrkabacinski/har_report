@@ -1,6 +1,6 @@
 import { createReport } from "./createReport";
-import { getDefaultReportTemplate } from "./getDefaultReportTemplate";
-import { hydrateButton } from "./hydrateButton";
+import { getReportTemplate } from "../utils/getReportTemplate";
+import { hydrateButton } from "../utils/hydrateButton";
 import { writeToClipboard } from "./writeToClipboard";
 
 export const appendEndpointButton = ({
@@ -33,7 +33,7 @@ export const appendEndpointButton = ({
 
     if (!reportContent) throw `Report pre element not found`;
 
-    const template = await getDefaultReportTemplate();
+    const template = await getReportTemplate();
 
     if (!reportContent.textContent) {
       const report = await createReport(entry, template);
@@ -51,6 +51,14 @@ export const appendEndpointButton = ({
 
       try {
         await writeToClipboard(content);
+
+        e.target.innerText = "Copied!";
+        e.target.setAttribute("disabled", "true");
+
+        setTimeout(() => {
+          e.target.innerText = "Copy";
+          e.target.removeAttribute("disabled");
+        }, 1000);
       } catch (err) {
         console.error(err);
       }

@@ -7,7 +7,3 @@ export const state: {
   isRecording: true,
   allowedResourceTypes: ["xhr", "fetch"],
 };
-
-document.addEventListener("beforeunload", () => {
-  state.requests.length = 0;
-});

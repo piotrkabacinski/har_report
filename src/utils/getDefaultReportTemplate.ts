@@ -1,7 +1,7 @@
 export const getDefaultReportTemplate = async () => {
   const response = await fetch("./defaultTemplate.mustache");
 
-  if (!response.body) throw Error();
+  if (!response.body) throw `No template response`;
 
   const reader = response.body.getReader();
 

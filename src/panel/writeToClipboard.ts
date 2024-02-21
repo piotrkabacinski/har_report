@@ -1,6 +1,6 @@
 // https://github.com/extend-chrome/clipboard/blob/master/src/index.ts
 export const writeToClipboard = (text: string): Promise<void> =>
-  new Promise((_resolve, reject) => {
+  new Promise((resolve, reject) => {
     const el = document.createElement("textarea");
     el.value = text;
     document.body.append(el);
@@ -10,4 +10,6 @@ export const writeToClipboard = (text: string): Promise<void> =>
     el.remove();
 
     if (!success) reject(new Error("Unable to write to clipboard"));
+
+    resolve();
   });
