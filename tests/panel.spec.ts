@@ -4,11 +4,10 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { createNetworkRequestEntry } from "./utils/createNetworkRequestEntry";
 import { sleep } from "./utils/sleep";
+import { testScopeKey } from "./utils/testScopeKey";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const testScopeKey = "__mock_utils";
 
 test.describe("Panel", () => {
   test.beforeEach(async ({ page }) => {

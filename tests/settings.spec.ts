@@ -1,11 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { faker } from "@faker-js/faker";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import { testScopeKey } from "./utils/testScopeKey";
+import { sleep } from "./utils/sleep";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const testScopeKey = "__mock_utils";
 
 test.describe("Settings", () => {
   test.beforeEach(async ({ page }) => {
@@ -19,7 +20,7 @@ test.describe("Settings", () => {
     }, testScopeKey);
   });
 
-  test("Renders template field with default template and enables form for editing", async ({
+  test("Render template field with default template and enable form for editing", async ({
     page,
   }) => {
     const content = await page.evaluate(
@@ -50,9 +51,30 @@ test.describe("Settings", () => {
     expect(isSubmitButtonDisabled).toBe(false);
     expect(isTextAreaDisabled).toBe(false);
   });
+
+  test("Save custom template in storage", async ({ page }) => {
+    const customTemplate = faker.hacker.noun();
+
+    await page.evaluate((customTemplate) => {
+      document.querySelector<HTMLTextAreaElement>("#report-template")!.value =
+        customTemplate;
+
+      document
+        .querySelector<HTMLFormElement>("form")!
+        .dispatchEvent(new Event("submit"));
+    }, customTemplate);
+
+    const savedTemplate = await page.evaluate(async () => {
+      return (await window.chrome.storage.local.get("har_parser_settings"))[
+        "har_parser_settings"
+      ]["template"];
+    });
+
+    expect(savedTemplate).toBe(customTemplate);
+  });
 });
 
-test.describe("Settings custom template", () => {
+test.describe("Custom template", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
     await page.addInitScript({
@@ -60,20 +82,35 @@ test.describe("Settings custom template", () => {
           har_parser_settings: {
             template: "foo",
           },
-        })`,
+        });
+        
+        window.confirm = () => true;`,
     });
 
     await page.goto(`/settings.html`);
   });
 
-  test("Render template field with custom template if there's such", async ({
-    page,
-  }) => {
+  test("Render custom template content if there's such", async ({ page }) => {
     const content = await page.evaluate(
       () =>
         document.querySelector<HTMLTextAreaElement>("#report-template")!.value
     );
 
     expect(content).toBe("foo");
+  });
+
+  test("Restore default template", async ({ page }) => {
+    await page.evaluate(() => {
+      document
+        .querySelector<HTMLButtonElement>("#restore-template")!
+        .dispatchEvent(new Event("click"));
+    });
+
+    const content = await page.evaluate(
+      () =>
+        document.querySelector<HTMLTextAreaElement>("#report-template")!.value
+    );
+
+    expect(content).not.toBe("foo");
   });
 });
