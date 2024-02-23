@@ -1,0 +1,24 @@
+status-dot {
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--light-gray);
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+
+  .status-dot--recording {
+    animation: pulse 1s infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes pulse {
+  from {
+    background: var(--dark-red);
+  }
+  to {
+    background: var(--medium-red);
+    box-shadow: 0 0 5px 3px var(--medium-red);
+  }
+}

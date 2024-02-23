@@ -1,4 +1,3 @@
-import { getStatusClass } from "./getStatusClass";
 import { appendEndpointButton } from "./appendEndpointButton";
 import { ElementSelector } from "../consts/ElementSelector";
 
@@ -11,8 +10,6 @@ export const appendRequestEntry = (
   const { status } = request.response;
   const { method } = request.request;
 
-  const statusClass = getStatusClass(status);
-
   tbody.insertAdjacentHTML(
     "beforeend",
     `<tr>
@@ -23,17 +20,13 @@ export const appendRequestEntry = (
       </td>
       <td>${method}</td>
       <td>
-        <span class="status ${statusClass}">
-          ${status}
-        </span>
+        <response-status status="${status}"></response-status>
       </td>
       <td class="endpoint" id="button-${index}"></td>
     </tr>
-    <tr class="hidden report ${statusClass}" id="report-${index}">
+    <tr class="hidden report" id="report-${index}">
       <td colspan="4">
-        <button type="button" class="copy">
-          Copy
-        </button>
+        <copy-button target-selector="#report-${index} pre"></copy-button>
         <pre></pre>
       </td>
     </tr>

@@ -11,14 +11,14 @@
     <header class="header">
       <div class="actions">
         <div class="recording-status">
-          <div id="status-dot" class="status-dot--recording"></div>
+          <status-dot id="status-dot" is-recording="true"></status-dot>
           <button type="button" id="pause">Pause</button>
         </div>
 
         <button type="button" id="reset">Reset</button>
       </div>
       <div>
-        ⚙️ <a href="#" target="_blank" class="link" id="settings-link">Settings </a>
+        <settings-link id="settings-link"></settings-link>
       </div>
     </header>
 

@@ -2,18 +2,13 @@ import { ElementSelector } from "../consts/ElementSelector";
 import { state } from "../utils/state";
 
 const toggleRecordingDot = (): void => {
-  const dot = document.querySelector<HTMLDivElement>(ElementSelector.statusDot);
+  const statusDot = document.querySelector<HTMLElement>(
+    ElementSelector.statusDot
+  );
 
-  if (!dot) throw `${ElementSelector.statusDot} not found`;
+  if (!statusDot) throw `${ElementSelector.statusDot} not found`;
 
-  const className = "status-dot--recording";
-
-  if (state.isRecording && !dot.classList.contains(className)) {
-    dot.classList.add(className);
-    return;
-  }
-
-  dot.classList.remove(className);
+  statusDot.setAttribute("is-recording", state.isRecording.toString());
 };
 
 export const handleToggleRecording = (

@@ -6,7 +6,10 @@ import { isString } from "../utils/isString";
 import { setEntriesAmount } from "./setEntriesAmount";
 import { state } from "../utils/state";
 import { handleToggleRecording } from "./handleToggleRecording";
-import { getFileUrl } from "../utils/getFileUrl";
+import "./components/StatusDot";
+import "./components/SettingsLink";
+import "./components/CopyButton";
+import "./components/ResponseStatus";
 
 {
   chrome.devtools.network.onRequestFinished.addListener((request): void => {
@@ -31,13 +34,5 @@ import { getFileUrl } from "../utils/getFileUrl";
   document.addEventListener("DOMContentLoaded", () => {
     hydrateButton(ElementSelector.resetButton, handleResetEntriesList);
     hydrateButton(ElementSelector.pauseButton, handleToggleRecording);
-
-    const settingsLink = document.querySelector<HTMLAnchorElement>(
-      ElementSelector.settingsLink
-    );
-
-    if (settingsLink) {
-      settingsLink.href = getFileUrl("settings.html");
-    }
   });
 }

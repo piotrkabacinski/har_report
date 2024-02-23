@@ -1,7 +1,6 @@
 import { createReport } from "./createReport";
 import { getReportTemplate } from "../utils/getReportTemplate";
 import { hydrateButton } from "../utils/hydrateButton";
-import { writeToClipboard } from "./writeToClipboard";
 
 export const appendEndpointButton = ({
   index,
@@ -44,24 +43,4 @@ export const appendEndpointButton = ({
   };
 
   hydrateButton(`#button-${index} button.href-button`, callback);
-  hydrateButton(
-    `#report-${index} button.copy`,
-    async (e: Event & { target: HTMLButtonElement }) => {
-      const content = reportTr.querySelector("pre").innerText;
-
-      try {
-        await writeToClipboard(content);
-
-        e.target.innerText = "Copied!";
-        e.target.setAttribute("disabled", "true");
-
-        setTimeout(() => {
-          e.target.innerText = "Copy";
-          e.target.removeAttribute("disabled");
-        }, 1000);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  );
 };
