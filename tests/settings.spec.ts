@@ -106,6 +106,8 @@ test.describe("Custom template", () => {
         .dispatchEvent(new Event("click"));
     });
 
+    await sleep(25);
+
     const content = await page.evaluate(
       () =>
         document.querySelector<HTMLTextAreaElement>("#report-template")!.value

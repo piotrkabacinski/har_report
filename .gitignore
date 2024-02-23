@@ -5,3 +5,5 @@
 /blob-report/
 /playwright/.cache/
 /.test_build
+.DS_Store
+
