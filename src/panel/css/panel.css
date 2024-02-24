@@ -1,27 +1,13 @@
 @import url("../../css/colors.css");
 @import url("../../css/global.css");
+@import url("../components/StatusDot.css");
+@import url("../components/ResponseStatus.css");
 @import url("table.css");
 @import url("actions.css");
 
 header {
   display: flex;
   align-items: center;
-}
-
-.status {
-  text-shadow: 1px 1px var(--black);
-}
-
-.status.redirect {
-  color: var(--yellow);
-}
-
-.status.success {
-  color: var(--green);
-}
-
-.status.fail {
-  color: var(--red);
 }
 
 .hidden {

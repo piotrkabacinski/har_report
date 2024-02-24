@@ -1,5 +1,5 @@
-import { storageKey } from "../consts/storageKey";
-import type { Settings } from "../types/Settings";
+import { storageKey } from "@/consts/storageKey";
+import type { Settings } from "@/types/Settings";
 import { getDefaultReportTemplate } from "./getDefaultReportTemplate";
 
 export const getReportTemplate = async () => {

@@ -1,0 +1,17 @@
+response-status {
+  .status {
+    text-shadow: 1px 1px var(--black);
+  }
+  
+  .status.redirect {
+    color: var(--yellow);
+  }
+  
+  .status.success {
+    color: var(--green);
+  }
+  
+  .status.fail {
+    color: var(--red);
+  }
+}

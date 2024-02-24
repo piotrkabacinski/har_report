@@ -1,5 +1,5 @@
-import { ElementSelector } from "../consts/ElementSelector";
-import { getDefaultReportTemplate } from "../utils/getDefaultReportTemplate";
+import { ElementSelector } from "@/consts/ElementSelector";
+import { getDefaultReportTemplate } from "@/utils/getDefaultReportTemplate";
 
 export const handleRestoreTemplate = async (): Promise<void> => {
   const isConfirmed = confirm("Are you sure to override current template?");

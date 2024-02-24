@@ -23,29 +23,15 @@ test.describe("Settings", () => {
   test("Render template field with default template and enable form for editing", async ({
     page,
   }) => {
-    const content = await page.evaluate(
-      () =>
-        document.querySelector<HTMLTextAreaElement>("#report-template")!.value
-    );
+    const content = await page.locator("#report-template").inputValue();
 
-    const isTextAreaDisabled = await page.evaluate(() => {
-      const textarea =
-        document.querySelector<HTMLTextAreaElement>("#report-template");
+    const isTextAreaDisabled = await page
+      .locator("#report-template")
+      .isDisabled();
 
-      if (!textarea) return;
-
-      return textarea.getAttribute("disabled") === undefined;
-    });
-
-    const isSubmitButtonDisabled = await page.evaluate(() => {
-      const button = document.querySelector<HTMLButtonElement>(
-        "form button[type='submit']"
-      );
-
-      if (!button) return;
-
-      return button.getAttribute("disabled") === undefined;
-    });
+    const isSubmitButtonDisabled = await page
+      .locator("form button[type='submit']")
+      .isDisabled();
 
     expect(content).toBeDefined();
     expect(isSubmitButtonDisabled).toBe(false);
@@ -55,14 +41,13 @@ test.describe("Settings", () => {
   test("Save custom template in storage", async ({ page }) => {
     const customTemplate = faker.hacker.noun();
 
-    await page.evaluate((customTemplate) => {
-      document.querySelector<HTMLTextAreaElement>("#report-template")!.value =
-        customTemplate;
+    await page.locator("#report-template").fill(customTemplate);
 
+    await page.evaluate(() => {
       document
         .querySelector<HTMLFormElement>("form")!
         .dispatchEvent(new Event("submit"));
-    }, customTemplate);
+    });
 
     const savedTemplate = await page.evaluate(async () => {
       return (await window.chrome.storage.local.get("har_parser_settings"))[
@@ -91,27 +76,17 @@ test.describe("Custom template", () => {
   });
 
   test("Render custom template content if there's such", async ({ page }) => {
-    const content = await page.evaluate(
-      () =>
-        document.querySelector<HTMLTextAreaElement>("#report-template")!.value
-    );
+    const content = await page.locator("#report-template").inputValue();
 
     expect(content).toBe("foo");
   });
 
   test("Restore default template", async ({ page }) => {
-    await page.evaluate(() => {
-      document
-        .querySelector<HTMLButtonElement>("#restore-template")!
-        .dispatchEvent(new Event("click"));
-    });
+    await page.locator("#restore-template").click();
 
     await sleep(25);
 
-    const content = await page.evaluate(
-      () =>
-        document.querySelector<HTMLTextAreaElement>("#report-template")!.value
-    );
+    const content = await page.locator("#report-template").inputValue();
 
     expect(content).not.toBe("foo");
   });
