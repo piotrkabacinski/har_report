@@ -251,7 +251,7 @@ test.describe("Panel", () => {
   });
 
   test("Render link to settings page", async ({ page }) => {
-    const href = await page.locator("#settings-link a").getAttribute("href")
+    const href = await page.locator("#settings-link a").getAttribute("href");
 
     expect(href).toBeDefined();
   });
