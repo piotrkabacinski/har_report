@@ -1,5 +1,5 @@
 import { hydrateButton } from "@/utils/hydrateButton";
-import { SerializedEntry } from "./state";
+import { SerializedEntry } from "../consts/state";
 
 export const appendEndpointButton = (entry: SerializedEntry): void => {
   const td = document.querySelector<HTMLTableCellElement>(

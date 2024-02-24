@@ -1,4 +1,4 @@
-import type { Settings } from "../types/Settings";
+import type { Settings } from "@/types/Settings";
 import { storageKey } from "@/consts/storageKey";
 import { ElementSelector } from "@/consts/ElementSelector";
 

@@ -1,6 +1,6 @@
 import { appendEndpointButton } from "./appendEndpointButton";
 import { ElementSelector } from "@/consts/ElementSelector";
-import type { SerializedEntry } from "./state";
+import type { SerializedEntry } from "../consts/state";
 
 export const appendRequestEntry = (entry: SerializedEntry): void => {
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);

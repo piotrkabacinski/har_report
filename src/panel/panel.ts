@@ -1,12 +1,12 @@
-import { appendRequestEntry } from "./appendRequest";
+import { appendRequestEntry } from "./utils/appendRequest";
 import { ElementSelector } from "@/consts/ElementSelector";
-import { handleResetEntriesList } from "./handleResetEntriesList";
+import { handleResetEntriesList } from "./utils/handleResetEntriesList";
 import { hydrateButton } from "@/utils/hydrateButton";
 import { isString } from "@/utils/isString";
-import { setEntriesAmount } from "./setEntriesAmount";
-import { state } from "./state";
-import { handleToggleRecording } from "./handleToggleRecording";
-import { createSerializedEntry } from "./createSerializedEntry";
+import { setEntriesAmount } from "./utils/setEntriesAmount";
+import { state } from "./consts/state";
+import { handleToggleRecording } from "./utils/handleToggleRecording";
+import { createSerializedEntry } from "./utils/createSerializedEntry";
 import "./components/StatusDot";
 import "./components/SettingsLink";
 import "./components/CopyButton";

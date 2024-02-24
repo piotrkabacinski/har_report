@@ -1,4 +1,4 @@
-import { getStatusClass } from "../getStatusClass";
+import { getStatusClass } from "../utils/getStatusClass";
 
 {
   enum Attribute {

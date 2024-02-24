@@ -1,6 +1,6 @@
-import type { SerializedEntry } from "./state";
+import type { SerializedEntry } from "../consts/state";
 import { createReport } from "./createReport";
-import { getReportTemplate } from "../utils/getReportTemplate";
+import { getReportTemplate } from "../../utils/getReportTemplate";
 
 export const createSerializedEntry = async (
   request: chrome.devtools.network.Request

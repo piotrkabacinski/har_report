@@ -1,10 +1,10 @@
 import { ElementSelector } from "@/consts/ElementSelector";
 import { getReportTemplate } from "@/utils/getReportTemplate";
-import { handleFormSubmit } from "./handleFormSubmit";
+import { handleFormSubmit } from "./utils/handleFormSubmit";
 import { hydrateButton } from "@/utils/hydrateButton";
-import { handleRestoreTemplate } from "./handleRestoreTemplate";
+import { handleRestoreTemplate } from "./utils/handleRestoreTemplate";
 import { storageKey } from "@/consts/storageKey";
-import type { Settings } from "../types/Settings";
+import type { Settings } from "@/types/Settings";
 
 {
   const form = document.querySelector<HTMLFormElement>("form");

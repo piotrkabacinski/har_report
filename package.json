@@ -12,18 +12,16 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@playwright/test": "^1.41.2",
-    "@types/chrome": "0.0.235",
+    "@types/chrome": "^0.0.261",
     "@types/mustache": "^4.2.2",
-    "@types/nanoid": "^3.0.0",
     "@types/node": "^20.11.19",
-    "esbuild": "0.17.19",
+    "esbuild": "^0.20.1",
     "http-server": "^14.1.1",
     "typescript": "^5.0.4"
   },
   "author": "Piotr Kabaciński",
   "license": "ISC",
   "dependencies": {
-    "mustache": "^4.2.0",
-    "nanoid": "^5.0.6"
+    "mustache": "^4.2.0"
   }
 }
