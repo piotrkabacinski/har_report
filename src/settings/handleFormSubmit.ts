@@ -1,6 +1,6 @@
 import type { Settings } from "../types/Settings";
-import { storageKey } from "../consts/storageKey";
-import { ElementSelector } from "../consts/ElementSelector";
+import { storageKey } from "@/consts/storageKey";
+import { ElementSelector } from "@/consts/ElementSelector";
 
 export const handleFormSubmit = async (
   e: SubmitEvent & { target: HTMLFormElement }
@@ -31,5 +31,5 @@ export const handleFormSubmit = async (
   setTimeout(() => {
     submitButton.innerText = "Save";
     submitButton.removeAttribute("disabled");
-  }, 1000);
+  }, 750);
 };

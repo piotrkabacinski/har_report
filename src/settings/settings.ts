@@ -1,9 +1,9 @@
-import { ElementSelector } from "../consts/ElementSelector";
-import { getReportTemplate } from "../utils/getReportTemplate";
+import { ElementSelector } from "@/consts/ElementSelector";
+import { getReportTemplate } from "@/utils/getReportTemplate";
 import { handleFormSubmit } from "./handleFormSubmit";
-import { hydrateButton } from "../utils/hydrateButton";
+import { hydrateButton } from "@/utils/hydrateButton";
 import { handleRestoreTemplate } from "./handleRestoreTemplate";
-import { storageKey } from "../consts/storageKey";
+import { storageKey } from "@/consts/storageKey";
 import type { Settings } from "../types/Settings";
 
 {

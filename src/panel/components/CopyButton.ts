@@ -1,23 +1,9 @@
+import { writeToClipboard } from "@/utils/writeToClipboard";
+
 {
   enum Attribute {
     targetSelector = "target-selector",
   }
-
-  // https://github.com/extend-chrome/clipboard/blob/master/src/index.ts
-  const writeToClipboard = (text: string): Promise<void> =>
-    new Promise((resolve, reject) => {
-      const el = document.createElement("textarea");
-      el.value = text;
-      document.body.append(el);
-
-      el.select();
-      const success = document.execCommand("copy");
-      el.remove();
-
-      if (!success) reject(new Error("Unable to write to clipboard"));
-
-      resolve();
-    });
 
   class CopyButton extends HTMLElement {
     constructor() {
@@ -71,16 +57,24 @@
       button.addEventListener("click", this.copyAction.bind(this));
     }
 
+    removeEvents() {
+      const button = this.querySelector<HTMLButtonElement>("button");
+
+      if (!button) return;
+
+      this.querySelector<HTMLButtonElement>("button").removeEventListener(
+        "click",
+        this.copyAction
+      );
+    }
+
     connectedCallback() {
       this.createTemplate();
       this.appendEvents();
     }
 
     disconnectedCallback() {
-      this.querySelector<HTMLButtonElement>("button")!.removeEventListener(
-        "click",
-        this.copyAction
-      );
+      this.removeEvents();
     }
   }
 

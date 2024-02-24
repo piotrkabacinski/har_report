@@ -1,46 +1,29 @@
-import { createReport } from "./createReport";
-import { getReportTemplate } from "../utils/getReportTemplate";
-import { hydrateButton } from "../utils/hydrateButton";
+import { hydrateButton } from "@/utils/hydrateButton";
+import { SerializedEntry } from "./state";
 
-export const appendEndpointButton = ({
-  index,
-  entry,
-}: {
-  index: number;
-  entry: chrome.devtools.network.Request;
-}): void => {
-  const td = document.querySelector<HTMLTableCellElement>(`#button-${index}`);
+export const appendEndpointButton = (entry: SerializedEntry): void => {
+  const td = document.querySelector<HTMLTableCellElement>(
+    `#button-${entry.id}`
+  );
 
-  if (!td) throw `Cell for button not found: "#button-${index}"`;
+  if (!td) throw `Cell for button not found: "#button-${entry.id}"`;
 
   const button = document.createElement("button");
 
-  const url = new URL(entry.request.url);
+  const url = new URL(entry.url);
 
   button.classList.add("href-button");
-  button.setAttribute("data-index", index.toString());
-  button.innerText = url.href.replace(url.origin, "");
+  button.innerText = url.pathname;
 
   td.appendChild(button);
 
-  const reportTr = document.querySelector(`#report-${index}`);
+  const reportTr = document.querySelector(`#report-${entry.id}`);
 
-  if (!reportTr) throw `Report tr not found: "#report-${index}"`;
+  if (!reportTr) throw `Report tr not found: "#report-${entry.id}"`;
 
-  const callback = async () => {
-    const reportContent = reportTr.querySelector("pre");
-
-    if (!reportContent) throw `Report pre element not found`;
-
-    const template = await getReportTemplate();
-
-    if (!reportContent.textContent) {
-      const report = await createReport(entry, template);
-      reportContent.innerHTML = report;
-    }
-
+  const callback = () => {
     reportTr.classList.toggle("hidden");
   };
 
-  hydrateButton(`#button-${index} button.href-button`, callback);
+  hydrateButton(`#button-${entry.id} button.href-button`, callback);
 };

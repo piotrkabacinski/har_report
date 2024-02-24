@@ -1,37 +1,32 @@
 import { appendEndpointButton } from "./appendEndpointButton";
-import { ElementSelector } from "../consts/ElementSelector";
+import { ElementSelector } from "@/consts/ElementSelector";
+import type { SerializedEntry } from "./state";
 
-export const appendRequestEntry = (
-  request: chrome.devtools.network.Request,
-  index: number
-): void => {
+export const appendRequestEntry = (entry: SerializedEntry): void => {
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);
-
-  const { status } = request.response;
-  const { method } = request.request;
 
   tbody.insertAdjacentHTML(
     "beforeend",
     `<tr>
       <td>
-        <time datetime="${request.startedDateTime}" class="time">
-          ${new Date(request.startedDateTime).toLocaleTimeString()}
+        <time datetime="${entry.dateTime}" class="time">
+          ${new Date(entry.dateTime).toLocaleTimeString()}
         </time>
       </td>
-      <td>${method}</td>
+      <td>${entry.method}</td>
       <td>
-        <response-status status="${status}"></response-status>
+        <response-status status="${entry.status}"></response-status>
       </td>
-      <td class="endpoint" id="button-${index}"></td>
+      <td class="endpoint" id="button-${entry.id}"></td>
     </tr>
-    <tr class="hidden report" id="report-${index}">
+    <tr class="hidden report" id="report-${entry.id}">
       <td colspan="4">
-        <copy-button target-selector="#report-${index} pre"></copy-button>
-        <pre></pre>
+        <copy-button target-selector="#report-${entry.id} pre"></copy-button>
+        <pre>${entry.report}</pre>
       </td>
     </tr>
     `
   );
 
-  appendEndpointButton({ index, entry: request });
+  appendEndpointButton(entry);
 };

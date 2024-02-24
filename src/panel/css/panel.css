@@ -1,9 +1,9 @@
 @import url("../../css/colors.css");
 @import url("../../css/global.css");
-@import url("table.css");
-@import url("actions.css");
 @import url("../components/StatusDot.css");
 @import url("../components/ResponseStatus.css");
+@import url("table.css");
+@import url("actions.css");
 
 header {
   display: flex;

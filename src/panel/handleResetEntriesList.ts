@@ -1,9 +1,9 @@
-import { state } from "../utils/state";
-import { ElementSelector } from "../consts/ElementSelector";
+import { state } from "./state";
+import { ElementSelector } from "@/consts/ElementSelector";
 import { setEntriesAmount } from "./setEntriesAmount";
 
 export const handleResetEntriesList = () => {
-  state.requests.length = 0;
+  state.entries.length = 0;
 
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);
 

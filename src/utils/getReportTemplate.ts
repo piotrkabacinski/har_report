@@ -1,4 +1,4 @@
-import { storageKey } from "../consts/storageKey";
+import { storageKey } from "@/consts/storageKey";
 import type { Settings } from "../types/Settings";
 import { getDefaultReportTemplate } from "./getDefaultReportTemplate";
 

@@ -1,34 +1,39 @@
 import { appendRequestEntry } from "./appendRequest";
-import { ElementSelector } from "../consts/ElementSelector";
+import { ElementSelector } from "@/consts/ElementSelector";
 import { handleResetEntriesList } from "./handleResetEntriesList";
-import { hydrateButton } from "../utils/hydrateButton";
-import { isString } from "../utils/isString";
+import { hydrateButton } from "@/utils/hydrateButton";
+import { isString } from "@/utils/isString";
 import { setEntriesAmount } from "./setEntriesAmount";
-import { state } from "../utils/state";
+import { state } from "./state";
 import { handleToggleRecording } from "./handleToggleRecording";
+import { createSerializedEntry } from "./createSerializedEntry";
 import "./components/StatusDot";
 import "./components/SettingsLink";
 import "./components/CopyButton";
 import "./components/ResponseStatus";
 
 {
-  chrome.devtools.network.onRequestFinished.addListener((request): void => {
-    if (!state.isRecording) return;
+  chrome.devtools.network.onRequestFinished.addListener(
+    async (request): Promise<void> => {
+      if (!state.isRecording) return;
 
-    if (!isString(request._resourceType))
-      throw "request._resourceType value is not string";
+      if (!isString(request._resourceType))
+        throw "request._resourceType value is not string";
 
-    if (!state.allowedResourceTypes.includes(request._resourceType)) return;
+      if (!state.allowedResourceTypes.includes(request._resourceType)) return;
 
-    const entriesAmount = state.requests.push(request);
+      const entry = await createSerializedEntry(request);
 
-    appendRequestEntry(request, entriesAmount - 1);
+      const entriesAmount = state.entries.push(entry);
 
-    setEntriesAmount(entriesAmount);
-  });
+      appendRequestEntry(entry);
+
+      setEntriesAmount(entriesAmount);
+    }
+  );
 
   document.addEventListener("beforeunload", () => {
-    state.requests.length = 0;
+    state.entries.length = 0;
   });
 
   document.addEventListener("DOMContentLoaded", () => {
