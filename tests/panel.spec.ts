@@ -25,27 +25,21 @@ test.describe("Panel", () => {
   test("Render empty requests table", async ({ page }) => {
     const table = page.locator("table");
 
-    expect(table).toBeDefined();
+    expect(await table.isVisible()).toBe(true);
 
-    const ths = await page.evaluate(() =>
-      Array.from(
-        document.querySelector("table thead tr")!.querySelectorAll("th")
-      ).map(({ innerText }) => innerText)
-    );
+    const ths = await page.locator("#table thead tr").locator("th").all();
 
     const labels = ["Time", "Method", "Status", "Path"];
 
     expect(ths.length).toBe(labels.length);
 
     for (let index in ths) {
-      expect(ths[index]).toBe(labels[index]);
+      expect(await ths[index].innerText()).toBe(labels[index]);
     }
 
-    const tr = await page.evaluate(() =>
-      document.querySelector("table tbody tr")
-    );
+    const tr = page.locator("#table tbody tr");
 
-    expect(tr).toBeNull();
+    expect(await tr.isVisible()).toBe(false);
   });
 
   test("Render response item in the table", async ({ page }) => {
@@ -53,28 +47,28 @@ test.describe("Panel", () => {
 
     await page.evaluate(
       ([entry, testScopeKey]: any[]) => {
-        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb("");
+          },
+        });
       },
       [entry, testScopeKey]
     );
 
-    const tr = await page.evaluate(() =>
-      document.querySelector("table tbody tr")
-    );
+    const entryItems = await page
+      .locator("#table tbody tr")
+      .first()
+      .locator("td")
+      .all();
 
-    const counter = await page.evaluate(
-      () => document.querySelector("#status")?.textContent
-    );
+    const tr = page.locator("#table tbody tr").first();
 
-    const entryItems = await page.evaluate(() => {
-      return Array.from(
-        document.querySelector("table tbody tr")!.querySelectorAll("td")
-      ).map(({ innerText }) => ({
-        innerText,
-      }));
-    });
+    const counter = await page.locator("#status").innerText();
 
-    expect(tr).toBeDefined();
+    expect(await tr.isVisible()).toBe(true);
+
     expect(counter).toBe("Entries: 1");
 
     const expects = [
@@ -86,11 +80,11 @@ test.describe("Panel", () => {
 
     for (const index in entryItems) {
       if (index === "0") {
-        expect(entryItems[index].innerText).not.toBe("Invalid Date");
+        expect(await entryItems[index].innerText()).not.toBe("Invalid Date");
         continue;
       }
 
-      expect(entryItems[index].innerText).toBe(expects[index]);
+      expect(await entryItems[index].innerText()).toBe(expects[index]);
     }
   });
 
@@ -110,29 +104,21 @@ test.describe("Panel", () => {
       [entry, testScopeKey, content]
     );
 
-    let isReportHidden = await page.evaluate(() =>
-      document.querySelector("#report-0")?.classList.contains("hidden")
-    );
+    let reportTr = page.locator(`tr.hidden[id^="report-"]`).first();
 
-    expect(isReportHidden).not.toBe(null);
+    expect(await reportTr.isHidden()).toBe(true);
 
-    await page.evaluate(() => {
-      document
-        .querySelector("#button-0 > button")
-        ?.dispatchEvent(new Event("click"));
-    });
+    const pathButton = page.locator(`td[id^="button-"] button`).first();
 
-    await sleep(10);
+    await pathButton.click();
 
-    isReportHidden = await page.evaluate(() =>
-      document.querySelector("#report-0")?.classList.contains("hidden")
-    );
+    reportTr = page.locator(`tr[id^="report-"]`).first();
 
-    expect(isReportHidden).toBe(false);
+    expect(await reportTr.isVisible()).toBe(true);
 
-    const reportContent = await page.evaluate(
-      () => document.querySelector("#report-0 td pre")?.textContent
-    );
+    const reportContent = await page
+      .locator(`tr.report[id^="report-"] pre`)
+      .innerText();
 
     expect(reportContent?.match(content)).not.toBe(null);
     expect(reportContent?.match(`${entry.response?.status}`)).not.toBe(null);
@@ -147,33 +133,29 @@ test.describe("Panel", () => {
 
     await page.evaluate(
       ([entry, testScopeKey, content, customTemplate]: any[]) => {
+        (window as any).chrome.storage.local.set({
+          har_parser_settings: {
+            template: customTemplate,
+          },
+        });
+
         (window as any)[testScopeKey].onRequestFinishedCallback({
           ...entry,
           getContent: (cb) => {
             cb(content);
           },
         });
-
-        (window as any).chrome.storage.local.set({
-          har_parser_settings: {
-            template: customTemplate,
-          },
-        });
       },
       [entry, testScopeKey, content, customTemplate]
     );
 
-    await page.evaluate(() => {
-      document
-        .querySelector("#button-0 > button")
-        ?.dispatchEvent(new Event("click"));
-    });
+    const pathButton = page.locator(`td[id^="button-"] button`).first();
 
-    await sleep(10);
+    await pathButton.click();
 
-    const reportContent = await page.evaluate(
-      () => document.querySelector("#report-0 td pre")?.textContent
-    );
+    const reportContent = await page
+      .locator(`tr.report[id^="report-"] pre`)
+      .innerText();
 
     expect(reportContent).toBe(`Custom ${content}`);
   });
@@ -183,120 +165,93 @@ test.describe("Panel", () => {
 
     await page.evaluate(
       ([entry, testScopeKey]: any[]) => {
-        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb("");
+          },
+        });
       },
       [entry, testScopeKey]
     );
 
-    let counter = await page.evaluate(
-      () => document.querySelector("#status")?.textContent
-    );
+    let counter = await page.locator("#status").innerText();
 
     expect(counter).toBe("Entries: 1");
 
-    await page.evaluate(() => {
-      document.querySelector("#reset")?.dispatchEvent(new Event("click"));
-    });
+    const resetButton = page.locator("#reset");
 
-    counter = await page.evaluate(
-      () => document.querySelector("#status")?.textContent
-    );
+    await resetButton.click();
+
+    counter = await page.locator("#status").innerText();
 
     expect(counter).toBe("Entries: 0");
 
-    const tr = await page.evaluate(() =>
-      document.querySelector("table tbody tr")
-    );
+    const reportTr = page.locator(`tr[id^="report-"]`);
 
-    expect(tr).toBeNull();
+    expect(await reportTr.isHidden()).toBe(true);
   });
 
   test("Pause and restore events listening", async ({ page }) => {
+    const pauseButton = page.locator("#pause");
+
+    const statusDot = page.locator("#status-dot div.status-dot--recording");
+
+    expect(await pauseButton.innerText()).toBe("Pause");
+    expect(await statusDot.isVisible()).toBe(true);
+
+    await pauseButton.click();
+
+    expect(await pauseButton.innerText()).toBe("Restore");
+    expect(await statusDot.isVisible()).toBe(false);
+
     const entry = createNetworkRequestEntry();
 
-    let buttonText = await page.evaluate(
-      () => document.querySelector("#pause")?.textContent
-    );
-
-    let isStatusDotActive = await page.evaluate(() =>
-      document
-        .querySelector("#status-dot")
-        ?.classList.contains("status-dot--recording")
-    );
-
-    expect(buttonText).toBe("Pause");
-    expect(isStatusDotActive).toBe(true);
-
-    await page.evaluate(() => {
-      document.querySelector("#pause")?.dispatchEvent(new Event("click"));
-    });
-
-    buttonText = await page.evaluate(
-      () => document.querySelector("#pause")?.textContent
-    );
-
-    isStatusDotActive = await page.evaluate(() =>
-      document
-        .querySelector("#status-dot")
-        ?.classList.contains("status-dot--recording")
-    );
-
-    expect(buttonText).toBe("Restore");
-    expect(isStatusDotActive).toBe(false);
-
     await page.evaluate(
       ([entry, testScopeKey]: any[]) => {
-        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb("");
+          },
+        });
       },
       [entry, testScopeKey]
     );
 
-    let tr = await page.evaluate(() =>
-      document.querySelector("table tbody tr")
-    );
+    const tr = page.locator("table tbody tr").first();
 
-    expect(tr).toBeNull();
+    expect(await tr.isVisible()).toBe(false);
 
     // Restore:
-    await page.evaluate(() => {
-      document.querySelector("#pause")?.dispatchEvent(new Event("click"));
-    });
+    await pauseButton.click();
+
+    expect(await pauseButton.innerText()).toBe("Pause");
+    expect(await statusDot.isVisible()).toBe(true);
 
     await page.evaluate(
       ([entry, testScopeKey]: any[]) => {
-        (window as any)[testScopeKey].onRequestFinishedCallback(entry);
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb("");
+          },
+        });
       },
       [entry, testScopeKey]
     );
 
-    const counter = await page.evaluate(
-      () => document.querySelector("#status")?.textContent
-    );
+    await sleep(25);
+
+    const counter = await page.locator("#status").innerText();
 
     expect(counter).toBe("Entries: 1");
 
-    tr = await page.evaluate(() => document.querySelector("table tbody tr"));
-
-    expect(tr).not.toBeNull();
-
-    buttonText = await page.evaluate(
-      () => document.querySelector("#pause")?.textContent
-    );
-
-    isStatusDotActive = await page.evaluate(() =>
-      document
-        .querySelector("#status-dot")
-        ?.classList.contains("status-dot--recording")
-    );
-
-    expect(buttonText).toBe("Pause");
-    expect(isStatusDotActive).toBe(true);
+    expect(await tr.isVisible()).toBe(true);
   });
 
   test("Render link to settings page", async ({ page }) => {
-    const href = await page.evaluate(() => {
-      return document.querySelector("#settings-link")?.getAttribute("href");
-    }, []);
+    const href = await page.locator("#settings-link a").getAttribute("href")
 
     expect(href).toBeDefined();
   });
