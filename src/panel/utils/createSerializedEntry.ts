@@ -13,7 +13,7 @@ export const createSerializedEntry = async (
   const report = await createReport(request, template);
 
   return {
-    id: crypto.randomUUID().split("-").slice(0, 2).join(""),
+    id: crypto.randomUUID().split("-").join(""),
     dateTime: request.startedDateTime,
     status,
     method,
