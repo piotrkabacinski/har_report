@@ -1,7 +1,7 @@
 import { ElementSelector } from "@/consts/ElementSelector";
 import { getReportTemplate } from "@/utils/getReportTemplate";
 import { handleFormSubmit } from "./utils/handleFormSubmit";
-import { hydrateButton } from "@/utils/hydrateButton";
+import { appendClickListener } from "@/utils/appendClickListener";
 import { handleRestoreTemplate } from "./utils/handleRestoreTemplate";
 import { storageKey } from "@/consts/storageKey";
 import type { Settings } from "@/types/Settings";
@@ -13,7 +13,10 @@ import type { Settings } from "@/types/Settings";
 
   form.addEventListener("submit", handleFormSubmit);
 
-  hydrateButton(ElementSelector.restoreTemplateButton, handleRestoreTemplate);
+  appendClickListener(
+    ElementSelector.restoreTemplateButton,
+    handleRestoreTemplate
+  );
 
   const textarea = document.querySelector<HTMLTextAreaElement>(
     ElementSelector.reportTemplate

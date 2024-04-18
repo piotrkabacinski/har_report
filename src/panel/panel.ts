@@ -1,9 +1,8 @@
 import { appendRequestEntry } from "./utils/appendRequest";
 import { ElementSelector } from "@/consts/ElementSelector";
 import { handleResetEntriesList } from "./utils/handleResetEntriesList";
-import { hydrateButton } from "@/utils/hydrateButton";
-import { isString } from "@/utils/isString";
-import { setEntriesAmount } from "./utils/setEntriesAmount";
+import { appendClickListener } from "@/utils/appendClickListener";
+import { isString } from "./utils/isString";
 import { state } from "./consts/state";
 import { handleToggleRecording } from "./utils/handleToggleRecording";
 import { createSerializedEntry } from "./utils/createSerializedEntry";
@@ -18,17 +17,16 @@ import "./components/ResponseStatus";
       if (!state.isRecording) return;
 
       if (!isString(request._resourceType))
-        throw "request._resourceType value is not string";
+        throw "request._resourceType value is not a string";
 
-      if (!state.allowedResourceTypes.includes(request._resourceType)) return;
+      if (!state.allowedResourceTypes.includes(request._resourceType))
+        throw `Resource type "${request._resourceType}" is not supported`;
 
       const entry = await createSerializedEntry(request);
 
-      const entriesAmount = state.entries.push(entry);
+      state.entries.push(entry);
 
       appendRequestEntry(entry);
-
-      setEntriesAmount(entriesAmount);
     }
   );
 
@@ -37,7 +35,7 @@ import "./components/ResponseStatus";
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    hydrateButton(ElementSelector.resetButton, handleResetEntriesList);
-    hydrateButton(ElementSelector.pauseButton, handleToggleRecording);
+    appendClickListener(ElementSelector.resetButton, handleResetEntriesList);
+    appendClickListener(ElementSelector.pauseButton, handleToggleRecording);
   });
 }

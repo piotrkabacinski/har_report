@@ -1,92 +1,90 @@
 #table {
   border-collapse: collapse;
-}
 
-#table tr:nth-child(3n) {
-  background: var(--dark-grey);
-}
+  tbody {
+    tr:hover {
+      background: var(--highlight);
+    }
 
-#table tbody tr:hover {
-  background: var(--highlight);
-}
+    tr.open {
+      background: var(--highlight);
+    }
 
-#table tbody tr.open {
-  background: var(--highlight);
-}
+    tr {
+      transition: background-color 0.15s ease;
+    }
+  }
 
-#table td.endpoint {
-  max-width: 0;
-  width: 100%;
-}
+  td.endpoint {
+    max-width: 0;
+    width: 100%;
+  }
 
-#table tbody tr {
-  transition: background-color 0.15s ease;
-}
+  th,
+  td {
+    padding: 5px;
+    text-align: left;
+  }
 
-#table th,
-td {
-  padding: 5px;
-  text-align: left;
-}
+  th {
+    opacity: 0.75;
+  }
 
-#table th {
-  opacity: 0.75;
-}
+  th,
+  td:not(.endpoint) {
+    width: 0;
+  }
 
-#table th,
-td:not(.endpoint) {
-  width: 0;
-}
+  td .time {
+    opacity: 0.75;
+  }
 
-#table td .time {
-  opacity: 0.75;
-}
+  td button.href-button {
+    background: transparent;
+    border: 0;
+    color: var(--white);
+    cursor: pointer;
+    font-size: 100%;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 0;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
 
-#table td button.href-button {
-  background: transparent;
-  border: 0;
-  color: var(--white);
-  cursor: pointer;
-  font-size: 100%;
-  font-weight: normal;
-  overflow: hidden;
-  padding: 0;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
+  tr.report {
+    border-bottom: 1px solid;
+    position: relative;
+  }
 
-#table tr.report {
-  border-bottom: 1px solid;
-  position: relative;
-}
+  tr.report td {
+    max-width: 0;
+    overflow: auto;
+  }
 
-#table tr.report td {
-  max-width: 0;
-  overflow: auto;
-}
+  tr.report.success {
+    border-bottom-color: var(--green);
+  }
 
-#table tr.report.success {
-  border-bottom-color: var(--green);
-}
+  tr.report.fail {
+    border-bottom-color: var(--red);
+  }
 
-#table tr.report.fail {
-  border-bottom-color: var(--red);
-}
+  tr.report.redirect {
+    border-bottom-color: var(--yellow);
+  }
 
-#table tr.report.redirect {
-  border-bottom-color: var(--yellow);
-}
+  tr.report pre {
+    white-space: break-spaces;
+    font-size: 0.75rem;
+    max-height: 350px;
+    overflow: auto;
+  }
 
-#table tr.report pre {
-  white-space: break-spaces;
-  font-size: 0.75rem;
-  max-height: 350px;
-  overflow: auto;
-}
-
-#table button.copy {
-  position: absolute;
-  right: 5px;
+  button.copy {
+    position: absolute;
+    right: 5px;
+  }
 }

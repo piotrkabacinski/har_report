@@ -1,4 +1,4 @@
-import { hydrateButton } from "@/utils/hydrateButton";
+import { appendClickListener } from "@/utils/appendClickListener";
 import { SerializedEntry } from "../consts/state";
 
 export const appendEndpointButton = (entry: SerializedEntry): void => {
@@ -25,5 +25,5 @@ export const appendEndpointButton = (entry: SerializedEntry): void => {
     reportTr.classList.toggle("hidden");
   };
 
-  hydrateButton(`#button-${entry.id} button.href-button`, callback);
+  appendClickListener(`#button-${entry.id} button.href-button`, callback);
 };

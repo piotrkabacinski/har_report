@@ -1,8 +1,11 @@
 import { state } from "../consts/state";
 import { ElementSelector } from "@/consts/ElementSelector";
-import { setEntriesAmount } from "./setEntriesAmount";
 
 export const handleResetEntriesList = () => {
+  const isConfirmed = confirm("Are you sure to clean up the entries list?");
+
+  if (!isConfirmed) return;
+
   state.entries.length = 0;
 
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);
@@ -10,6 +13,4 @@ export const handleResetEntriesList = () => {
   if (!tbody) throw `${ElementSelector.table} element not found`;
 
   tbody.innerHTML = "";
-
-  setEntriesAmount(0);
-}
+};

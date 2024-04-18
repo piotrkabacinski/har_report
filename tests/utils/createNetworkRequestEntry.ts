@@ -24,7 +24,12 @@ export const createResponse = (
   cookies: [],
   content: {
     size: faker.number.int({ max: 1000 }),
-    mimeType: "text/html",
+    mimeType: faker.helpers.arrayElement([
+      "text/html",
+      "text/plain",
+      "application/json",
+      "application/csv",
+    ]),
   },
   redirectURL: "",
   headersSize: -1,

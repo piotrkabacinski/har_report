@@ -1,5 +1,6 @@
 import { ElementSelector } from "@/consts/ElementSelector";
 import { state } from "../consts/state";
+import { StatusDotAttribute } from "../consts/StatusDotAttribute";
 
 const toggleRecordingDot = (): void => {
   const statusDot = document.querySelector<HTMLElement>(
@@ -8,7 +9,10 @@ const toggleRecordingDot = (): void => {
 
   if (!statusDot) throw `${ElementSelector.statusDot} not found`;
 
-  statusDot.setAttribute("is-recording", state.isRecording.toString());
+  statusDot.setAttribute(
+    StatusDotAttribute.isRecording,
+    state.isRecording.toString()
+  );
 };
 
 export const handleToggleRecording = (

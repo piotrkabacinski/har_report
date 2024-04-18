@@ -2,7 +2,10 @@ import { test, expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { createNetworkRequestEntry } from "./utils/createNetworkRequestEntry";
+import {
+  createNetworkRequestEntry,
+  createResponse,
+} from "./utils/createNetworkRequestEntry";
 import { sleep } from "./utils/sleep";
 import { testScopeKey } from "./utils/testScopeKey";
 
@@ -65,11 +68,7 @@ test.describe("Panel", () => {
 
     const tr = page.locator("#table tbody tr").first();
 
-    const counter = await page.locator("#status").innerText();
-
     expect(await tr.isVisible()).toBe(true);
-
-    expect(counter).toBe("Entries: 1");
 
     const expects = [
       undefined,
@@ -121,6 +120,9 @@ test.describe("Panel", () => {
       .innerText();
 
     expect(reportContent?.match(content)).not.toBe(null);
+    expect(reportContent?.match(content)).not.toContain(
+      "Unsupported response content MIME type"
+    );
     expect(reportContent?.match(`${entry.response?.status}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.method}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.url}`)).not.toBe(null);
@@ -160,11 +162,54 @@ test.describe("Panel", () => {
     expect(reportContent).toBe(`Custom ${content}`);
   });
 
+  test("Toggle response report with unsupported mime type content message", async ({
+    page,
+  }) => {
+    const entry = createNetworkRequestEntry({
+      response: createResponse({
+        content: {
+          mimeType: faker.string.alphanumeric(),
+          size: 10,
+        },
+      }),
+    });
+
+    await page.evaluate(
+      ([entry, testScopeKey, content, customTemplate]: any[]) => {
+        (window as any).chrome.storage.local.set({
+          har_parser_settings: {
+            template: customTemplate,
+          },
+        });
+
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb(content);
+          },
+        });
+      },
+      [entry, testScopeKey]
+    );
+
+    const pathButton = page.locator(`td[id^="button-"] button`).first();
+
+    await pathButton.click();
+
+    const reportContent = await page
+      .locator(`tr.report[id^="report-"] pre`)
+      .innerText();
+
+    expect(reportContent).toContain("Unsupported response content MIME type");
+  });
+
   test("Clear out entries", async ({ page }) => {
     const entry = createNetworkRequestEntry();
 
     await page.evaluate(
       ([entry, testScopeKey]: any[]) => {
+        (window as any).confirm = () => true;
+
         (window as any)[testScopeKey].onRequestFinishedCallback({
           ...entry,
           getContent: (cb) => {
@@ -175,17 +220,9 @@ test.describe("Panel", () => {
       [entry, testScopeKey]
     );
 
-    let counter = await page.locator("#status").innerText();
-
-    expect(counter).toBe("Entries: 1");
-
     const resetButton = page.locator("#reset");
 
     await resetButton.click();
-
-    counter = await page.locator("#status").innerText();
-
-    expect(counter).toBe("Entries: 0");
 
     const reportTr = page.locator(`tr[id^="report-"]`);
 
@@ -242,10 +279,6 @@ test.describe("Panel", () => {
     );
 
     await sleep(25);
-
-    const counter = await page.locator("#status").innerText();
-
-    expect(counter).toBe("Entries: 1");
 
     expect(await tr.isVisible()).toBe(true);
   });

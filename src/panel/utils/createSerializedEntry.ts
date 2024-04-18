@@ -1,4 +1,4 @@
-import type { SerializedEntry } from "../consts/state";
+import { type SerializedEntry, state } from "../consts/state";
 import { createReport } from "./createReport";
 import { getReportTemplate } from "../../utils/getReportTemplate";
 
@@ -10,7 +10,14 @@ export const createSerializedEntry = async (
 
   const template = await getReportTemplate();
 
-  const report = await createReport(request, template);
+  const isMimeTypeSupported =
+    state.allowedResponseMimeTypesRegExps.find((regExp) =>
+      regExp.test(request.response.content.mimeType)
+    ) !== undefined;
+
+  const report = isMimeTypeSupported
+    ? await createReport(request, template)
+    : `<span style="opacity:0.5">HAR Parser: Unsupported response content MIME type: "${request.response.content.mimeType}"</span>`;
 
   return {
     id: crypto.randomUUID().split("-").join(""),

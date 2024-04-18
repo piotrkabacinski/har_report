@@ -1,8 +1,7 @@
-{
-  enum Attribute {
-    isRecording = "is-recording",
-  }
+import { StatusDotAttribute as Attribute } from "../consts/StatusDotAttribute";
+import { ElementSelector } from "@/consts/ElementSelector";
 
+{
   class StatusDot extends HTMLElement {
     private isRecording = false;
 
@@ -37,5 +36,5 @@
     }
   }
 
-  customElements.define("status-dot", StatusDot);
+  customElements.define(ElementSelector.statusDot, StatusDot);
 }

@@ -1,4 +1,4 @@
-import { writeToClipboard } from "@/utils/writeToClipboard";
+import { writeToClipboard } from "../utils/writeToClipboard";
 
 {
   enum Attribute {
