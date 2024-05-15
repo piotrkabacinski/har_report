@@ -37,6 +37,7 @@
 
   td .time {
     opacity: 0.75;
+    text-wrap: nowrap;
   }
 
   td button.href-button {
