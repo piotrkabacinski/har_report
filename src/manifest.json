@@ -1,5 +1,5 @@
 {
-  "name": "HAR Parser",
+  "name": "HAR Report",
   "version": "0",
   "description": "Create custom network reports using HAR data",
   "manifest_version": 3,

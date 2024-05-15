@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HAR Parser settings</title>
+    <title>HAR Report settings</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="settings/css/settings.css" />
   </head>
   <body>
     <header>
-      <h1>HAR Parser settings</h1>
+      <h1>HAR Report settings</h1>
     </header>
 
     <main>
@@ -22,6 +22,14 @@
           name="template"
           disabled
         ></textarea>
+
+        <div class="submit-wrapper">
+          <button type="button" id="restore-template">Restore default</button>
+          <button type="submit">Save</button>
+        </div>
+      </form>
+
+      <aside>
         <a
           class="link"
           href="http://www.softwareishard.com/blog/har-12-spec/#entries"
@@ -30,12 +38,17 @@
         >
           HAR 1.2 spec
         </a>
+        <br />
 
-        <div class="submit-wrapper">
-          <button type="button" id="restore-template">Restore default</button>
-          <button type="submit">Save</button>
-        </div>
-      </form>
+        <a
+          class="link"
+          href="https://github.com/janl/mustache.js?tab=readme-ov-file#variables"
+          target="_blank"
+          rel="noopener"
+        >
+          Mustache.js template
+        </a>
+      </aside>
     </main>
 
     <script src="settings/settings.js"></script>

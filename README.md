@@ -1,4 +1,4 @@
-# HAR Parser
+# HAR Report
 
 ## About
 

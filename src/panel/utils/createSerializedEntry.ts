@@ -17,7 +17,7 @@ export const createSerializedEntry = async (
 
   const report = isMimeTypeSupported
     ? await createReport(request, template)
-    : `<span style="opacity:0.5">HAR Parser: Unsupported response content MIME type: "${request.response.content.mimeType}"</span>`;
+    : `<span style="opacity:0.5">HAR Report: Unsupported response content MIME type: "${request.response.content.mimeType}"</span>`;
 
   return {
     id: crypto.randomUUID().split("-").join(""),

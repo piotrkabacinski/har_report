@@ -136,7 +136,7 @@ test.describe("Panel", () => {
     await page.evaluate(
       ([entry, testScopeKey, content, customTemplate]: any[]) => {
         (window as any).chrome.storage.local.set({
-          har_parser_settings: {
+          har_report_settings: {
             template: customTemplate,
           },
         });
@@ -177,7 +177,7 @@ test.describe("Panel", () => {
     await page.evaluate(
       ([entry, testScopeKey, content, customTemplate]: any[]) => {
         (window as any).chrome.storage.local.set({
-          har_parser_settings: {
+          har_report_settings: {
             template: customTemplate,
           },
         });

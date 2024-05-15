@@ -1,1 +1,1 @@
-export const storageKey = "har_parser_settings";
+export const storageKey = "har_report_settings";

@@ -50,8 +50,8 @@ test.describe("Settings", () => {
     });
 
     const savedTemplate = await page.evaluate(async () => {
-      return (await window.chrome.storage.local.get("har_parser_settings"))[
-        "har_parser_settings"
+      return (await window.chrome.storage.local.get("har_report_settings"))[
+        "har_report_settings"
       ]["template"];
     });
 
@@ -64,7 +64,7 @@ test.describe("Custom template", () => {
     await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
     await page.addInitScript({
       content: `window.chrome.storage.local.set({
-          har_parser_settings: {
+          har_report_settings: {
             template: "foo",
           },
         });
