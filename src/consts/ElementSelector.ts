@@ -6,6 +6,7 @@ export enum ElementSelector {
   statusDot = "status-dot",
   settingsLink = "#settings-link",
   reportTemplate = "#report-template",
+  mimeSupportCheckbox = "#MIME-support",
   restoreTemplateButton = "#restore-template",
   submitButton = "form button[type='submit']",
 }

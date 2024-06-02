@@ -1,6 +1,7 @@
 import { type SerializedEntry, state } from "../consts/state";
 import { createReport } from "./createReport";
 import { getReportTemplate } from "../../utils/getReportTemplate";
+import { getAreAllMIMEtypesRendered } from "./getAreAllMIMEtypesRendered";
 
 export const createSerializedEntry = async (
   request: chrome.devtools.network.Request
@@ -11,6 +12,7 @@ export const createSerializedEntry = async (
   const template = await getReportTemplate();
 
   const isMimeTypeSupported =
+    (await getAreAllMIMEtypesRendered()) ||
     state.allowedResponseMimeTypesRegExps.find((regExp) =>
       regExp.test(request.response.content.mimeType)
     ) !== undefined;

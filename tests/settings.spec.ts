@@ -59,6 +59,29 @@ test.describe("Settings", () => {
   });
 });
 
+test.describe("MIME support checkbox", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
+    await page.addInitScript({
+      content: `window.chrome.storage.local.set({
+          har_parser_settings: {
+            areAllMIMEtypesRendered: "on",
+          },
+        });`,
+    });
+
+    await page.goto(`/settings.html`);
+  });
+
+  test("Selects MIME support as checked when settings says so", async ({
+    page,
+  }) => {
+    const isChecked = await page.locator("#MIME-support").isChecked();
+
+    expect(isChecked).toBe(true);
+  });
+});
+
 test.describe("Custom template", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
@@ -68,7 +91,7 @@ test.describe("Custom template", () => {
             template: "foo",
           },
         });
-        
+
         window.confirm = () => true;`,
     });
 

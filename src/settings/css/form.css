@@ -1,4 +1,6 @@
 form {
+  position: relative;
+
   #report-template {
     background: var(--super-dark-grey);
     border-width: 0;
@@ -19,4 +21,28 @@ form {
 
 label {
   opacity: 0.75;
+}
+
+.checkbox-wrapper {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  margin: 15px 0 10px 0;
+
+  > input {
+    margin: 0;
+  }
+}
+
+.restore-button-wrapper {
+  text-align: right;
+}
+
+.template-editor-support {
+  display: flex;
+  margin-top: 10px;
+
+  > * {
+    flex: 1;
+  }
 }
