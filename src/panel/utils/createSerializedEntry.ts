@@ -1,6 +1,7 @@
 import { type SerializedEntry, state } from "../consts/state";
 import { createReport } from "./createReport";
 import { getReportTemplate } from "../../utils/getReportTemplate";
+import { getAreAllMIMEtypesRendered } from "./getAreAllMIMEtypesRendered";
 
 export const createSerializedEntry = async (
   request: chrome.devtools.network.Request
@@ -11,13 +12,14 @@ export const createSerializedEntry = async (
   const template = await getReportTemplate();
 
   const isMimeTypeSupported =
+    (await getAreAllMIMEtypesRendered()) ||
     state.allowedResponseMimeTypesRegExps.find((regExp) =>
       regExp.test(request.response.content.mimeType)
     ) !== undefined;
 
   const report = isMimeTypeSupported
     ? await createReport(request, template)
-    : `<span style="opacity:0.5">HAR Parser: Unsupported response content MIME type: "${request.response.content.mimeType}"</span>`;
+    : `<span style="opacity:0.5">HAR Report: Unsupported response content MIME type: "${request.response.content.mimeType}"</span>`;
 
   return {
     id: crypto.randomUUID().split("-").join(""),

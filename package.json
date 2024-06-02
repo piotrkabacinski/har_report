@@ -7,6 +7,7 @@
   "scripts": {
     "build": "export OUT_DIR='dist' && sh build.sh",
     "test": "sh test.sh",
+    "test-ui": "npx playwright test --ui",
     "start": "http-server dist/"
   },
   "devDependencies": {

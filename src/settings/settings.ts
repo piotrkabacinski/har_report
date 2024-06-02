@@ -34,6 +34,18 @@ import type { Settings } from "@/types/Settings";
       ? storage[storageKey].template
       : await getReportTemplate();
 
+    const mimeSupportCheckbox = document.querySelector<HTMLInputElement>(
+      ElementSelector.mimeSupportCheckbox
+    );
+
+    if (mimeSupportCheckbox) {
+      const areAllMIMEtypesRendered = storage[storageKey]
+        ? storage[storageKey].areAllMIMEtypesRendered === "on"
+        : false;
+
+      mimeSupportCheckbox.checked = areAllMIMEtypesRendered;
+    }
+
     textarea.value = template;
     textarea.removeAttribute("disabled");
     textarea.setAttribute("placeholder", "Report template");

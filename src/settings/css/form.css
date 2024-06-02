@@ -1,4 +1,6 @@
 form {
+  position: relative;
+
   #report-template {
     background: var(--super-dark-grey);
     border-width: 0;
@@ -19,4 +21,25 @@ form {
 
 label {
   opacity: 0.75;
+}
+
+.checkbox-wrapper {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.restore-button-wrapper {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.har-spec-link-wrapper {
+  left: calc(100% - 100px);
+  position: absolute;
+  text-align: right;
+  top: 0;
+  width: 100px;
+  z-index: 0;
 }

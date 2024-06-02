@@ -1,10 +1,8 @@
-# HAR Parser
+# HAR Report
 
 ## About
 
-Chromium extension for parsing [HAR](<https://en.wikipedia.org/wiki/HAR_(file_format)>) data and generating reports using predefined templates (default definition: `src/defaultTemplate.mustache`).
-
-Project is in early stage of development (proof of concept 🚧) and includes only `XHR` and `fetch` requests.
+Chromium extension for using [HAR](<https://en.wikipedia.org/wiki/HAR_(file_format)>) data to generate reports using predefined templates for XHR and fetch request types.
 
 <img src="https://gcdnb.pbrd.co/images/CDMYmiiM4kph.jpg?o=1" width="500" />
 
