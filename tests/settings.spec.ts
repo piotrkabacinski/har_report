@@ -64,7 +64,7 @@ test.describe("MIME support checkbox", () => {
     await page.addInitScript({ path: `${__dirname}/utils/chrome.mock.js` });
     await page.addInitScript({
       content: `window.chrome.storage.local.set({
-          har_parser_settings: {
+          har_report_settings: {
             areAllMIMEtypesRendered: "on",
           },
         });`,
