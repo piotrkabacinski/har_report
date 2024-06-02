@@ -242,8 +242,6 @@ test.describe("Panel", () => {
       .locator(`tr.report[id^="report-"] pre`)
       .innerText();
 
-    console.log(reportContent);
-
     expect(reportContent).not.toContain(
       "Unsupported response content MIME type"
     );
