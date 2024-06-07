@@ -2,7 +2,7 @@ import { state } from "../consts/state";
 import { ElementSelector } from "@/consts/ElementSelector";
 
 export const handleResetEntriesList = () => {
-  const isConfirmed = confirm("Are you sure to clean up the entries list?");
+  const isConfirmed = confirm("Are you sure to clean up the entire list?");
 
   if (!isConfirmed) return;
 

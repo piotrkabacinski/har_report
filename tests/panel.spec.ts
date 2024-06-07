@@ -266,11 +266,14 @@ test.describe("Panel", () => {
 
     const resetButton = page.locator("#reset");
 
+    expect(await resetButton.isHidden()).toBe(false);
+
     await resetButton.click();
 
     const reportTr = page.locator(`tr[id^="report-"]`);
 
     expect(await reportTr.isHidden()).toBe(true);
+    expect(await resetButton.isHidden()).toBe(true);
   });
 
   test("Pause and restore events listening", async ({ page }) => {

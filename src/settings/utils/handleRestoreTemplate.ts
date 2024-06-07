@@ -2,7 +2,9 @@ import { ElementSelector } from "@/consts/ElementSelector";
 import { getDefaultReportTemplate } from "@/utils/getDefaultReportTemplate";
 
 export const handleRestoreTemplate = async (): Promise<void> => {
-  const isConfirmed = confirm("Are you sure to override current template?");
+  const isConfirmed = confirm(
+    "Are you sure to override current template content?"
+  );
 
   if (!isConfirmed) return;
 
