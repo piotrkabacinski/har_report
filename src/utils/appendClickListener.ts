@@ -1,6 +1,6 @@
 export const appendClickListener = (
   selector: string,
-  callback: (...params: any[]) => void
+  callback: (...params: unknown[]) => void
 ): void => {
   const element = document.querySelector(selector);
 

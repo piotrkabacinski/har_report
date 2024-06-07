@@ -19,6 +19,8 @@ npx playwright install chromium
 
 ```bash
 npm t
+
+npm run lint
 ```
 
 ```bash

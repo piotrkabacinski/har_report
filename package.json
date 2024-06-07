@@ -6,19 +6,24 @@
   "type": "module",
   "scripts": {
     "build": "export OUT_DIR='dist' && sh build.sh",
+    "lint": "eslint",
     "test": "sh test.sh",
     "test-ui": "npx playwright test --ui",
     "start": "http-server dist/"
   },
   "devDependencies": {
+    "@eslint/js": "^9.4.0",
     "@faker-js/faker": "^8.4.1",
     "@playwright/test": "^1.44.1",
     "@types/chrome": "^0.0.268",
     "@types/mustache": "^4.2.5",
-    "@types/node": "^20.13.0",
+    "@types/node": "^20.14.2",
     "esbuild": "^0.21.4",
+    "eslint": "^9.4.0",
+    "globals": "^15.4.0",
     "http-server": "^14.1.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.12.0"
   },
   "author": "Piotr Kabaciński",
   "license": "ISC",
