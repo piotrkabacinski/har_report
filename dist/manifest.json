@@ -5,5 +5,10 @@
   "manifest_version": 3,
   "minimum_chrome_version": "110.0",
   "devtools_page": "devtools.html",
-  "permissions": ["clipboardWrite", "storage"]
+  "permissions": ["clipboardWrite", "storage"],
+  "icons": {
+    "32": "icons/icon_32.png",
+    "64": "icons/icon_64.png",
+    "128": "icons/icon_128.png"
+  }
 }
