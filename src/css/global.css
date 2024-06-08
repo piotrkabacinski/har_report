@@ -23,4 +23,8 @@ button {
   &:hover {
     border-color: #ffffff26
   }
+
+  &:disabled {
+    opacity: 0.75;
+  }
 }
