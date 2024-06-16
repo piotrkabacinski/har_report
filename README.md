@@ -6,7 +6,7 @@ Chromium extension for using [HAR](<https://en.wikipedia.org/wiki/HAR_(file_form
 
 <img width="600" alt="har_report" src="https://github.com/piotrkabacinski/HARilized/assets/3975783/abe3fada-c04f-486c-a55f-de4d66a2ff5c">
 
-To test it, simply load project's `dist` content as browser [extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
+See HAR Report at [chrome web store](https://chromewebstore.google.com/detail/har-report/dahgmfemcfeekmkecfpnbpgbkflenhgc?authuser=0&hl=pl).
 
 ## Development
 
@@ -26,5 +26,7 @@ npm run lint
 ```bash
 npm run build
 ```
+
+To test it, simply load project's `dist` content as browser [extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
 
 Each update requires manual update of the extension in the browser.
