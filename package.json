@@ -1,15 +1,18 @@
 {
   "name": "har_report",
+  "author": "Piotr Kabaciński",
+  "license": "ISC",
   "version": "1.0.0",
   "description": "",
   "main": "",
   "type": "module",
   "scripts": {
-    "build": "export OUT_DIR='dist' && sh build.sh",
+    "build": "export OUT_DIR='dist' && sh bin/build.sh",
     "lint": "eslint src",
-    "test": "sh test.sh",
+    "test": "sh bin/test.sh",
     "test-ui": "npx playwright test --ui",
-    "start": "http-server dist/"
+    "start": "http-server dist/",
+    "tsc": "tsc"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",
@@ -21,8 +24,6 @@
     "http-server": "^14.1.1",
     "typescript": "^5.8.2"
   },
-  "author": "Piotr Kabaciński",
-  "license": "ISC",
   "dependencies": {
     "mustache": "^4.2.0"
   }

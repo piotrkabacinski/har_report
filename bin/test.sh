@@ -1,4 +1,4 @@
 export OUT_DIR=".test_build" &&
-sh build.sh &&
+sh bin/build.sh &&
 playwright test --retries=2 &&
 rm -rf $OUT_DIR
