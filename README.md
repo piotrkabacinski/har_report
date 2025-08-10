@@ -27,6 +27,8 @@ npm run lint
 npm run build
 ```
 
+To switch between version use `git tag`.
+
 To test it, simply load project's `dist` content as browser [extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
 
 Each update requires manual update of the extension in the browser.
