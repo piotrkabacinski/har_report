@@ -9,4 +9,5 @@ export enum ElementSelector {
   mimeSupportCheckbox = "#MIME-support",
   restoreTemplateButton = "#restore-template",
   submitButton = "form button[type='submit']",
+  filter = "#filter",
 }

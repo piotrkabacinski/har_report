@@ -6,6 +6,7 @@ import { isString } from "./utils/isString";
 import { state } from "./consts/state";
 import { handleToggleRecording } from "./utils/handleToggleRecording";
 import { createSerializedEntry } from "./utils/createSerializedEntry";
+import { appendFiltersListener } from "./utils/appendFiltersListener";
 import "./components/StatusDot";
 import "./components/SettingsLink";
 import "./components/CopyButton";
@@ -27,7 +28,7 @@ import "./components/ResponseStatus";
       state.entries.push(entry);
 
       appendRequestEntry(entry);
-    }
+    },
   );
 
   document.addEventListener("beforeunload", () => {
@@ -37,5 +38,6 @@ import "./components/ResponseStatus";
   document.addEventListener("DOMContentLoaded", () => {
     appendClickListener(ElementSelector.resetButton, handleResetEntriesList);
     appendClickListener(ElementSelector.pauseButton, handleToggleRecording);
+    appendFiltersListener();
   });
 }

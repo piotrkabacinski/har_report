@@ -1,13 +1,14 @@
 import { appendEndpointButton } from "./appendEndpointButton";
 import { ElementSelector } from "@/consts/ElementSelector";
-import type { SerializedEntry } from "../consts/state";
+import { state, type SerializedEntry } from "../consts/state";
+import { isRowHidden } from "./filterTableRow";
 
 export const appendRequestEntry = (entry: SerializedEntry): void => {
   const tbody = document.querySelector(`${ElementSelector.table} tbody`);
 
   tbody.insertAdjacentHTML(
     "beforeend",
-    `<tr>
+    `<tr id="tr-${entry.id}" class="${isRowHidden(entry.url, state.filter) ? "hidden" : ""}">
       <td>
         <time datetime="${entry.dateTime}" class="time">
           ${new Date(entry.dateTime).toLocaleTimeString()}
@@ -25,7 +26,7 @@ export const appendRequestEntry = (entry: SerializedEntry): void => {
         <pre>${entry.report}</pre>
       </td>
     </tr>
-    `
+    `,
   );
 
   appendEndpointButton(entry);
