@@ -17,11 +17,11 @@ body {
 button {
   background: #434343;
   border: 1px solid #ffffff36;
-  border-radius: 3px;
+  border-radius: 5px;
   color: var(--white);
 
   &:hover {
-    border-color: #ffffff26
+    border-color: #ffffff26;
   }
 
   &:disabled {

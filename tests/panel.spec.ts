@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { test, expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import {
   createNetworkRequestEntry,
+  createRequest,
   createResponse,
 } from "./utils/createNetworkRequestEntry";
 import { sleep } from "./utils/sleep";
@@ -37,7 +39,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey]
+      [entry, testScopeKey],
     );
 
     const entryItems = await page
@@ -78,7 +80,7 @@ test.describe("Panel", () => {
 
     expect(ths.length).toBe(labels.length);
 
-    for (let index in ths) {
+    for (const index in ths) {
       expect(await ths[index].innerText()).toBe(labels[index]);
     }
 
@@ -100,7 +102,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey, content]
+      [entry, testScopeKey, content],
     );
 
     let reportTr = page.locator(`tr.hidden[id^="report-"]`).first();
@@ -121,7 +123,7 @@ test.describe("Panel", () => {
 
     expect(reportContent?.match(content)).not.toBe(null);
     expect(reportContent?.match(content)).not.toContain(
-      "Unsupported response content MIME type"
+      "Unsupported response content MIME type",
     );
     expect(reportContent?.match(`${entry.response?.status}`)).not.toBe(null);
     expect(reportContent?.match(`${entry.request?.method}`)).not.toBe(null);
@@ -148,7 +150,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey, content, customTemplate]
+      [entry, testScopeKey, content, customTemplate],
     );
 
     const pathButton = page.locator(`td[id^="button-"] button`).first();
@@ -189,7 +191,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey]
+      [entry, testScopeKey],
     );
 
     const pathButton = page.locator(`td[id^="button-"] button`).first();
@@ -231,7 +233,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey]
+      [entry, testScopeKey],
     );
 
     const pathButton = page.locator(`td[id^="button-"] button`).first();
@@ -243,7 +245,7 @@ test.describe("Panel", () => {
       .innerText();
 
     expect(reportContent).not.toContain(
-      "Unsupported response content MIME type"
+      "Unsupported response content MIME type",
     );
   });
 
@@ -261,7 +263,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey]
+      [entry, testScopeKey],
     );
 
     const resetButton = page.locator("#reset");
@@ -300,7 +302,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey]
+      [entry, testScopeKey],
     );
 
     const tr = page.locator("table tbody tr").first();
@@ -322,7 +324,7 @@ test.describe("Panel", () => {
           },
         });
       },
-      [entry, testScopeKey]
+      [entry, testScopeKey],
     );
 
     await sleep(50);
@@ -334,5 +336,127 @@ test.describe("Panel", () => {
     const href = await page.locator("#settings-link a").getAttribute("href");
 
     expect(href).toBeDefined();
+  });
+
+  test("Filter entries", async ({ page }) => {
+    const query = faker.string.alphanumeric({ length: 10 });
+
+    const entries = [
+      createNetworkRequestEntry({
+        request: createRequest({ url: `https://${query}.com` }),
+      }),
+      createNetworkRequestEntry({
+        request: createRequest({ url: "https://foo.com" }),
+      }),
+      createNetworkRequestEntry({
+        request: createRequest({ url: `https://bar.com?query=${query}` }),
+      }),
+    ];
+
+    for (const entry of entries) {
+      await page.evaluate(
+        ([entry, testScopeKey]: any[]) => {
+          (window as any)[testScopeKey].onRequestFinishedCallback({
+            ...entry,
+            getContent: (cb) => {
+              cb("");
+            },
+          });
+        },
+        [entry, testScopeKey],
+      );
+    }
+
+    const initialEntryItems = await page.locator("#table tbody tr").all();
+
+    const visibleInitialEntryItemsCount = (
+      await Promise.all(initialEntryItems.map((entry) => entry.isVisible()))
+    ).filter(Boolean).length;
+
+    expect(visibleInitialEntryItemsCount).toBe(entries.length);
+
+    const filterInput = page.locator("#filter").first();
+
+    // Type query
+    await filterInput.fill(query.slice(0, 5));
+
+    {
+      const filteredEntryItems = await page.locator("#table tbody tr").all();
+
+      const filteredEntryItemsCount = (
+        await Promise.all(filteredEntryItems.map((entry) => entry.isVisible()))
+      ).filter(Boolean).length;
+
+      expect(filteredEntryItemsCount).toBe(1);
+    }
+
+    // Add new random request when filter is on
+    await page.evaluate(
+      ([entry, testScopeKey]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb("");
+          },
+        });
+      },
+      [
+        createNetworkRequestEntry({
+          request: createRequest({ url: "https://fox.com" }),
+        }),
+        testScopeKey,
+      ],
+    );
+
+    {
+      const filteredEntryItems = await page.locator("#table tbody tr").all();
+
+      const filteredEntryItemsCount = (
+        await Promise.all(filteredEntryItems.map((entry) => entry.isVisible()))
+      ).filter(Boolean).length;
+
+      expect(filteredEntryItemsCount).toBe(1);
+    }
+
+    // Add new accurate request when filter is on
+    await page.evaluate(
+      ([entry, testScopeKey]: any[]) => {
+        (window as any)[testScopeKey].onRequestFinishedCallback({
+          ...entry,
+          getContent: (cb) => {
+            cb("");
+          },
+        });
+      },
+      [
+        createNetworkRequestEntry({
+          request: createRequest({ url: `https://fox.com?query=${query}` }),
+        }),
+        testScopeKey,
+      ],
+    );
+
+    {
+      const filteredEntryItems = await page.locator("#table tbody tr").all();
+
+      const filteredEntryItemsCount = (
+        await Promise.all(filteredEntryItems.map((entry) => entry.isVisible()))
+      ).filter(Boolean).length;
+
+      expect(filteredEntryItemsCount).toBe(2);
+    }
+
+    // Clear query
+    await filterInput.fill("");
+
+    {
+      const filteredEntryItems = await page.locator("#table tbody tr").all();
+
+      const filteredEntryItemsCount = (
+        await Promise.all(filteredEntryItems.map((entry) => entry.isVisible()))
+      ).filter(Boolean).length;
+
+      expect(filteredEntryItemsCount).toBe(entries.length + 2);
+    }
   });
 });

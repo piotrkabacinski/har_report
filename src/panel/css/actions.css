@@ -6,8 +6,14 @@
 .recording-status {
   display: flex;
   align-items: center;
+  gap: 5px;
 }
 
-#reset {
-  margin-left: 5px;
+#filter {
+  background: var(--dark-grey);
+  border: 0;
+  color: var(--light-grey);
+  padding: 3px 5px;
+  border-radius: 5px;
+  outline: 0;
 }
